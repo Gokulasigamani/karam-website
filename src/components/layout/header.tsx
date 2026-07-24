@@ -34,12 +34,12 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2 lg:gap-3">
-          <ThemeToggle />
-          {/* Below `lg` this lives inside the menu instead, so the bar stays
-              to a mark, a toggle and one control */}
-          <Button href={routes.raiseConcern} className="hidden lg:inline-flex">
-            Raise A Concern
-          </Button>
+          {/* Below `lg` these live inside the menu instead, so the bar stays
+              to a mark and one control */}
+          <div className="hidden items-center gap-3 lg:flex">
+            <ThemeToggle />
+            <Button href={routes.raiseConcern}>Raise A Concern</Button>
+          </div>
           <MobileNav />
         </div>
       </Container>

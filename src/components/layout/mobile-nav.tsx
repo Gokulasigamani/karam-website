@@ -5,6 +5,7 @@ import { mainNav } from "@/config/navigation";
 import { routes } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
 import { SmoothLink } from "@/components/ui/smooth-link";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Icon } from "@/components/ui/icons";
 import { cn } from "@/lib/utils/cn";
 
@@ -62,10 +63,16 @@ export function MobileNav() {
                 </SmoothLink>
               </li>
             ))}
+
+            {/* The header theme switch lives here on small screens */}
+            <li className="flex items-center justify-between border-b border-hairline py-2.5">
+              <span className="text-base font-medium text-ink">Theme</span>
+              <ThemeToggle />
+            </li>
           </ul>
         </nav>
 
-        {/* The header CTA lives here on small screens */}
+        {/* The header CTAs live here on small screens */}
         <div className="mt-6 flex flex-col gap-2.5">
           <Button
             href={routes.raiseConcern}
