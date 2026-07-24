@@ -1,0 +1,59 @@
+import Image from "next/image";
+import { statePoints, tamilNaduIntro } from "@/content/about";
+import { Container } from "@/components/ui/container";
+import { Reveal } from "@/components/ui/reveal";
+import { TextCycle } from "@/components/ui/text-cycle";
+import { BannerCycle } from "./banner-cycle";
+
+/**
+ * One self-contained banner, laid out as a wide rectangle: the fixed copy sits
+ * on the left, the changing step on the right. Two columns keep it short
+ * instead of stacking into a tall block.
+ */
+export function TamilNadu() {
+  return (
+    <Container className="pb-14 lg:pb-20">
+      <Reveal>
+        <div className="relative isolate overflow-hidden rounded-[var(--radius-block)] bg-ink px-6 py-10 text-white sm:px-9 sm:py-11 lg:px-12 lg:py-12">
+          <Image
+            src={tamilNaduIntro.image.url}
+            alt={tamilNaduIntro.image.alt}
+            fill
+            sizes="100vw"
+            className="-z-20 object-cover"
+          />
+          {/* Black shade, angled so the copy side stays darkest */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/92 to-ink/72"
+          />
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink/45" />
+
+          <div className="relative grid gap-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-14">
+            <div>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <span className="text-[0.6875rem] font-bold tracking-[0.12em] text-lime-400 uppercase">
+                  {tamilNaduIntro.eyebrow}
+                </span>
+                <span className="inline-flex items-baseline gap-1.5 rounded-full bg-white/8 px-2.5 py-1 text-[0.6875rem] font-semibold text-white/70">
+                  Live in
+                  <TextCycle items={tamilNaduIntro.districts} className="text-lime-400" />
+                </span>
+              </div>
+
+              <h2 className="mt-4 text-[1.625rem] leading-[1.12] font-extrabold sm:text-[2rem] lg:text-[2.25rem]">
+                {tamilNaduIntro.title}
+              </h2>
+
+              <p className="mt-4 max-w-lg text-[0.875rem] leading-[1.7] text-white/55">
+                {tamilNaduIntro.description}
+              </p>
+            </div>
+
+            <BannerCycle points={statePoints} />
+          </div>
+        </div>
+      </Reveal>
+    </Container>
+  );
+}

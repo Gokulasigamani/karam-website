@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens.
+   Everything visual is defined here — components reference tokens, never raw
+   hex. Rebranding is a change to this block and nothing else.
+
+   Palette: lime accent on near-black type, over white and a soft grey surface.
+   No borders anywhere — separation comes from surface contrast, not outlines.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Accent — lime. Buttons, progress fills, icon chips. */
+  --color-lime-50: #f8fee9;
+  --color-lime-100: #eefcc8;
+  --color-lime-200: #e2fa9c;
+  --color-lime-300: #d2f76a;
+  --color-lime-400: #c3f53c;
+  --color-lime-500: #b0e825;
+  --color-lime-600: #93c516;
+
+  /* Neutrals */
+  --color-ink: #0a0a0a;
+  --color-ink-soft: #18181b;
+  --color-muted: #71717a;
+  --color-surface: #f4f4f5;
+  --color-surface-strong: #ebebed;
+  --color-hairline: #e4e4e7;
+
+  /* Form validation */
+  --color-danger: #c02626;
+  --color-danger-soft: #fdeaea;
+  --color-success: #197a4b;
+  --color-success-soft: #e8f6ee;
+
+  /* Shape */
+  --radius-card: 1rem;
+  --radius-media: 1.5rem;
+  --radius-block: 1.75rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta);
+}
+
+/* --------------------------------------------------------------------------- */
+
+@layer base {
+  /* No `scroll-behavior: smooth` — anchor scrolling is tweened in
+     lib/utils/scroll.ts, and the two would fight each other. */
+
+  /* Anchor targets clear the sticky header on a plain browser jump */
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Display type: tight tracking is what reads as "premium" at large sizes */
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-lime-400);
+    color: var(--color-ink);
+  }
+}
+
+@layer utilities {
+  /* Hides the scrollbar on horizontal rails while keeping them scrollable */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Scroll reveal — driven by the Reveal component's data-shown attribute */
+  .reveal {
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Splash: specks that twinkle in and out */
+@keyframes glitter {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Splash: a slow sheen turning behind the mark */
+@keyframes sheen-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Reduced motion: scroll-reveal is dropped and tweens are shortened at the
+   source, rather than blanket-disabling every transition on the page. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
