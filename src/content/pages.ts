@@ -166,6 +166,24 @@ export const policyNotice = {
   dismissLabel: "Not now",
 };
 
+/* ----------------------------------------------------------------- Join invite */
+
+export const joinInvite = {
+  /** Bump to invite everyone again after a campaign change. */
+  version: "v1",
+  eyebrow: "Join Karam",
+  title: "Someone near you is waiting to be believed.",
+  body: "Most people in need are not asking for money. They are asking for someone to confirm what is happening, and for the right desk to hear it. That is the whole job, and it takes about an hour.",
+  stats: [
+    { value: "1,24,860+", label: "Members" },
+    { value: "38", label: "Districts" },
+    { value: "8,240", label: "Cases closed" },
+  ],
+  primaryLabel: "Raise A Concern",
+  secondaryLabel: "Volunteer Near You",
+  footnote: "Karam never asks for money and never handles funds.",
+};
+
 /* ---------------------------------------------------------------------- Privacy */
 
 export const privacyPage = {

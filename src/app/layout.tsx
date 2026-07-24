@@ -6,6 +6,7 @@ import { HashScroll } from "@/components/layout/hash-scroll";
 import { SplashScreen } from "@/components/layout/splash-screen";
 import { ScrollToTop } from "@/components/layout/scroll-to-top";
 import { PolicyNotice } from "@/components/layout/policy-notice";
+import { JoinInvite } from "@/components/layout/join-invite";
 import { AppProviders } from "@/lib/providers/app-providers";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
@@ -66,6 +67,7 @@ export default function RootLayout({
           <Footer />
           <ScrollToTop />
           <PolicyNotice />
+          <JoinInvite />
         </AppProviders>
       </body>
     </html>
