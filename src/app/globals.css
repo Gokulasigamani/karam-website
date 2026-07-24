@@ -2,15 +2,25 @@
 
 /* ---------------------------------------------------------------------------
    Design tokens.
-   Everything visual is defined here — components reference tokens, never raw
-   hex. Rebranding is a change to this block and nothing else.
 
-   Palette: lime accent on near-black type, over white and a soft grey surface.
-   No borders anywhere — separation comes from surface contrast, not outlines.
+   Two kinds of token, and the difference is the whole system:
+
+   FIXED    — the same value in every theme. The lime accent, and `shade`/`paper`
+              for things layered on photographs or on the accent itself, where
+              the contrast partner must never move.
+
+   THEMED   — declared in `:root` for light and overridden in `.dark`, then
+              mapped through `@theme inline` so utilities resolve at use time.
+              `bg-surface` is written once and is correct in both themes.
+
+   Components reference tokens, never raw hex, and never `dark:` variants for
+   colour. Adding a third theme would mean adding one block below.
 --------------------------------------------------------------------------- */
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  /* Accent — lime. Buttons, progress fills, icon chips. */
+  /* FIXED — accent. Lime is light, so anything on it uses `shade`, not `ink`. */
   --color-lime-50: #f8fee9;
   --color-lime-100: #eefcc8;
   --color-lime-200: #e2fa9c;
@@ -19,19 +29,9 @@
   --color-lime-500: #b0e825;
   --color-lime-600: #93c516;
 
-  /* Neutrals */
-  --color-ink: #0a0a0a;
-  --color-ink-soft: #18181b;
-  --color-muted: #71717a;
-  --color-surface: #f4f4f5;
-  --color-surface-strong: #ebebed;
-  --color-hairline: #e4e4e7;
-
-  /* Form validation */
-  --color-danger: #c02626;
-  --color-danger-soft: #fdeaea;
-  --color-success: #197a4b;
-  --color-success-soft: #e8f6ee;
+  /* FIXED — absolutes. Photo scrims, chips on photos, text on the accent. */
+  --color-shade: #0a0a0a;
+  --color-paper: #ffffff;
 
   /* Shape */
   --radius-card: 1rem;
@@ -39,8 +39,67 @@
   --radius-block: 1.75rem;
 }
 
+/* THEMED — light is the default */
+:root {
+  --canvas: #ffffff;
+  --elevated: #ffffff;
+  --surface: #f4f4f5;
+  --surface-strong: #ebebed;
+  --hairline: #e4e4e7;
+  --contrast: #0a0a0a;
+  --ink: #0a0a0a;
+  --muted: #71717a;
+  --track: #0a0a0a;
+
+  --danger: #c02626;
+  --danger-soft: #fdeaea;
+  --success: #197a4b;
+  --success-soft: #e8f6ee;
+
+  --pattern-line: rgb(10 10 10 / 0.08);
+  --shadow-pop: 0 20px 60px -15px rgb(10 10 10 / 0.35);
+  --shadow-fab: 0 8px 28px -8px rgb(10 10 10 / 0.55);
+}
+
+.dark {
+  --canvas: #0b0b0d;
+  --elevated: #1c1c21;
+  --surface: #16161a;
+  --surface-strong: #1f1f25;
+  --hairline: #27272c;
+  /* Still darker than the canvas, so inverted blocks read as wells */
+  --contrast: #050506;
+  --ink: #f4f4f5;
+  --muted: #a1a1aa;
+  --track: #3f3f46;
+
+  --danger: #ff9c9c;
+  --danger-soft: #2a1416;
+  --success: #7ae0aa;
+  --success-soft: #0f2419;
+
+  --pattern-line: rgb(255 255 255 / 0.07);
+  --shadow-pop: 0 20px 60px -15px rgb(0 0 0 / 0.75);
+  --shadow-fab: 0 8px 28px -8px rgb(0 0 0 / 0.8);
+}
+
 @theme inline {
   --font-sans: var(--font-jakarta);
+
+  --color-canvas: var(--canvas);
+  --color-elevated: var(--elevated);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-hairline: var(--hairline);
+  --color-contrast: var(--contrast);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-track: var(--track);
+
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
 }
 
 /* --------------------------------------------------------------------------- */
@@ -55,8 +114,8 @@
   }
 
   body {
-    background: #ffffff;
-    color: var(--color-ink);
+    background: var(--canvas);
+    color: var(--ink);
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -76,11 +135,71 @@
 
   ::selection {
     background: var(--color-lime-400);
-    color: var(--color-ink);
+    color: var(--color-shade);
+  }
+
+  /* Native controls (select arrows, scrollbars, date pickers) follow the theme */
+  :root {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
   }
 }
 
 @layer utilities {
+  /**
+   * Card texture: concentric hairline arcs spreading from the top-right corner,
+   * like ripples from a dropped stone. Masked so they fade before reaching the
+   * copy on the left.
+   *
+   * Drawn on a pseudo-element rather than the card itself, so it inherits the
+   * radius, sits under the content, and survives the hover background change.
+   * Add `card-pattern` to any surface that should carry it.
+   */
+  .card-pattern,
+  .card-pattern-invert {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .card-pattern::before,
+  .card-pattern-invert::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    -webkit-mask-image: radial-gradient(150% 130% at 100% 0%, #000 12%, transparent 76%);
+    mask-image: radial-gradient(150% 130% at 100% 0%, #000 12%, transparent 76%);
+    opacity: 0.85;
+    transition: opacity 0.3s ease-out;
+  }
+
+  /* On the page's own surfaces — the line colour follows the theme */
+  .card-pattern::before {
+    background-image: repeating-radial-gradient(
+      circle at 100% 0%,
+      transparent 0 25px,
+      var(--pattern-line) 25px 26px
+    );
+  }
+
+  /* On the black blocks */
+  .card-pattern-invert::before {
+    background-image: repeating-radial-gradient(
+      circle at 100% 0%,
+      transparent 0 25px,
+      rgb(255 255 255 / 0.09) 25px 26px
+    );
+  }
+
+  .card-pattern:hover::before,
+  .card-pattern-invert:hover::before {
+    opacity: 1;
+  }
+
   /* Hides the scrollbar on horizontal rails while keeping them scrollable */
   .no-scrollbar {
     scrollbar-width: none;
@@ -114,23 +233,26 @@
   }
 }
 
-/* Splash: specks that twinkle in and out */
-@keyframes glitter {
-  0%,
-  100% {
-    opacity: 0;
-    transform: scale(0.35);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1);
+/* On narrow screens the privacy notice spans the width, so lift the
+   scroll-to-top button clear of it while it is showing. On `sm` and up the
+   notice sits bottom-left and the button bottom-right — no collision. */
+@media (max-width: 639px) {
+  body.policy-open .scroll-top {
+    bottom: 15rem;
   }
 }
 
-/* Splash: a slow sheen turning behind the mark */
-@keyframes sheen-turn {
-  to {
-    transform: rotate(360deg);
+/* Splash: dots pulsing in sequence under the wordmark */
+@keyframes loader-dot {
+  0%,
+  70%,
+  100% {
+    transform: scale(0.55);
+    opacity: 0.3;
+  }
+  35% {
+    transform: scale(1);
+    opacity: 1;
   }
 }
 

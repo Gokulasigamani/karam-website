@@ -45,7 +45,7 @@ export function MobileNav() {
 
       <div
         className={cn(
-          "fixed inset-x-0 top-16 z-40 bg-white/97 px-4 pb-6 backdrop-blur-xl transition-opacity duration-200",
+          "fixed inset-x-0 top-16 z-40 bg-canvas/95 px-4 pb-6 backdrop-blur-xl transition-opacity duration-200",
           open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         )}
       >

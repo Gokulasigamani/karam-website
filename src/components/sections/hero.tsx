@@ -12,7 +12,7 @@ import { SocialLinks } from "@/components/ui/social-links";
 export function Hero() {
   return (
     <Container className="pt-2">
-      <div className="relative overflow-hidden rounded-[var(--radius-media)] bg-ink">
+      <div className="relative overflow-hidden rounded-[var(--radius-media)] bg-shade">
         <Image
           src="https://picsum.photos/seed/karam-hands/1920/1000"
           alt="Two people reaching out to hold each other's hands"
@@ -36,7 +36,7 @@ export function Hero() {
           />
 
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
-            <h1 className="flex flex-wrap items-end gap-x-3 gap-y-1 text-white">
+            <h1 className="flex flex-wrap items-end gap-x-3 gap-y-1 text-paper">
               <span
                 className="leading-[0.8] font-extrabold tracking-[-0.055em]"
                 style={{ fontSize: "clamp(3.75rem, 13vw, 9.5rem)" }}

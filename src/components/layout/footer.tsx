@@ -8,7 +8,7 @@ import { Logo } from "@/components/ui/icons";
 export function Footer() {
   return (
     <Container as="footer" className="pb-5">
-      <div className="rounded-[var(--radius-block)] bg-ink px-6 py-12 text-white sm:px-10 sm:py-14 lg:px-14">
+      <div className="card-pattern-invert rounded-[var(--radius-block)] bg-contrast px-6 py-12 text-paper sm:px-10 sm:py-14 lg:px-14">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
           <div>
             <div className="inline-flex items-center gap-2 text-[1.375rem] font-extrabold tracking-[-0.04em]">

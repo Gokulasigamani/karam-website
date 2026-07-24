@@ -16,7 +16,7 @@ const control = cn(
   "w-full rounded-xl bg-surface px-4 py-3 text-[0.9375rem] text-ink",
   "placeholder:text-muted/70 outline-none",
   "transition-[background-color,box-shadow] duration-200",
-  "focus:bg-white focus:ring-2 focus:ring-lime-400",
+  "focus:bg-elevated focus:ring-2 focus:ring-lime-400",
   "disabled:opacity-50",
 );
 
@@ -125,18 +125,21 @@ export function Choice({
   return (
     <label
       className={cn(
-        "flex cursor-pointer items-start gap-3 rounded-xl bg-surface px-4 py-3 transition-colors duration-200 hover:bg-surface-strong has-checked:bg-lime-400",
+        "group flex cursor-pointer items-start gap-3 rounded-xl bg-surface px-4 py-3 transition-colors duration-200 hover:bg-surface-strong has-checked:bg-lime-400",
         className,
       )}
     >
       <input
-        className="mt-0.5 size-4 shrink-0 accent-ink outline-none focus-visible:ring-2 focus-visible:ring-ink"
+        className="mt-0.5 size-4 shrink-0 accent-shade outline-none focus-visible:ring-2 focus-visible:ring-ink"
         {...props}
       />
-      <span>
-        <span className="block text-[0.8125rem] font-semibold text-ink">{label}</span>
+      {/* Once checked the row turns lime, so its text switches to the fixed dark */}
+      <span className="group-has-checked:text-shade">
+        <span className="block text-[0.8125rem] font-semibold text-ink group-has-checked:text-shade">
+          {label}
+        </span>
         {description && (
-          <span className="mt-0.5 block text-[0.75rem] leading-relaxed text-muted">
+          <span className="mt-0.5 block text-[0.75rem] leading-relaxed text-muted group-has-checked:text-shade/70">
             {description}
           </span>
         )}

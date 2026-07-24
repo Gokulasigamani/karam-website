@@ -158,6 +158,31 @@ function ArrowRight(props: IconProps) {
   );
 }
 
+function ArrowUp(props: IconProps) {
+  return (
+    <svg {...base} {...props} aria-hidden="true">
+      <path d="M12 20V5m-6 6 6-6 6 6" />
+    </svg>
+  );
+}
+
+function Sun(props: IconProps) {
+  return (
+    <svg {...base} {...props} aria-hidden="true">
+      <circle cx="12" cy="12" r="4.2" />
+      <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4" />
+    </svg>
+  );
+}
+
+function Moon(props: IconProps) {
+  return (
+    <svg {...base} {...props} aria-hidden="true">
+      <path d="M20 13.5A8.2 8.2 0 0 1 10.5 4a8.5 8.5 0 1 0 9.5 9.5Z" />
+    </svg>
+  );
+}
+
 function Plus(props: IconProps) {
   return (
     <svg {...base} {...props} aria-hidden="true">
@@ -231,7 +256,8 @@ export function Logo(props: IconProps) {
           transform={`rotate(${angle} 16 16)`}
         />
       ))}
-      <circle cx="16" cy="16" r="4" fill="var(--color-ink)" />
+      {/* Always dark: the mark sits on lime as often as on the page */}
+      <circle cx="16" cy="16" r="4" fill="var(--color-shade)" />
     </svg>
   );
 }
@@ -252,6 +278,9 @@ export const icons = {
   check: Check,
   verified: Verified,
   arrowRight: ArrowRight,
+  arrowUp: ArrowUp,
+  sun: Sun,
+  moon: Moon,
   plus: Plus,
   menu: Menu,
   close: Close,

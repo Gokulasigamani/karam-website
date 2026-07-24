@@ -30,7 +30,7 @@ export function Officials() {
             {governmentPoints.map((point, index) => (
               <Reveal as="li" key={point} delay={120 + index * 80}>
                 <div className="flex gap-4 border-t border-hairline py-5 last:border-b">
-                  <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-lime-400 text-ink">
+                  <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-lime-400 text-shade">
                     <Icon name="check" className="size-3" strokeWidth={2.5} />
                   </span>
                   <span className="text-[0.875rem] leading-[1.65] text-muted">{point}</span>
@@ -41,7 +41,7 @@ export function Officials() {
         </div>
 
         <Reveal delay={100}>
-          <div className="rounded-[var(--radius-block)] bg-surface p-6 sm:p-8 lg:p-9">
+          <div className="card-pattern rounded-[var(--radius-block)] bg-surface p-6 sm:p-8 lg:p-9">
             <div className="flex items-baseline justify-between gap-4">
               <h3 className="text-[1.0625rem] font-bold text-ink">Departments On Karam</h3>
               <span className="text-xs font-medium text-muted">Median first reply</span>
@@ -60,7 +60,7 @@ export function Officials() {
                       </p>
                     </div>
 
-                    <span className="shrink-0 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink transition-colors duration-300 group-hover:bg-lime-400">
+                    <span className="shrink-0 rounded-full bg-elevated px-3 py-1.5 text-xs font-bold text-ink transition-colors duration-300 group-hover:bg-lime-400 group-hover:text-shade">
                       {department.responseTime}
                     </span>
                   </div>

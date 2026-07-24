@@ -14,8 +14,8 @@ export function ContactForm() {
 
   if (state.status === "success") {
     return (
-      <div className="rounded-[var(--radius-block)] bg-surface p-8 text-center lg:p-10">
-        <span className="mx-auto grid size-12 place-items-center rounded-2xl bg-lime-400 text-ink">
+      <div className="card-pattern rounded-[var(--radius-block)] bg-surface p-8 text-center lg:p-10">
+        <span className="mx-auto grid size-12 place-items-center rounded-2xl bg-lime-400 text-shade">
           <Icon name="check" className="size-6" strokeWidth={2.5} />
         </span>
         <h2 className="mt-6 text-[1.375rem] font-extrabold text-ink">Message sent.</h2>

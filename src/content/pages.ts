@@ -154,6 +154,18 @@ export const contactMethods: ContactMethod[] = [
   },
 ];
 
+/* --------------------------------------------------------------- Policy notice */
+
+export const policyNotice = {
+  /** Bump this when the policy changes materially, to ask everyone again. */
+  version: "2026-07-24",
+  title: "Before you continue",
+  body: "Karam keeps only what a case needs in order to move, never sells it, and runs no advertising or tracking. Cookies here do one job: keep you signed in and remember your ward.",
+  acceptLabel: "I Accept",
+  readLabel: "Read The Policy",
+  dismissLabel: "Not now",
+};
+
 /* ---------------------------------------------------------------------- Privacy */
 
 export const privacyPage = {

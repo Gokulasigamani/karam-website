@@ -30,8 +30,8 @@ export default function VolunteerPage() {
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
               {volunteerSteps.map((step, index) => (
                 <Reveal as="li" key={step.title} delay={index * 80}>
-                  <div className="rounded-[var(--radius-card)] bg-surface p-5 transition-colors duration-300 hover:bg-surface-strong">
-                    <span className="grid size-9 place-items-center rounded-lg bg-lime-400 text-ink">
+                  <div className="card-pattern rounded-[var(--radius-card)] bg-surface p-5 transition-colors duration-300 hover:bg-surface-strong">
+                    <span className="grid size-9 place-items-center rounded-lg bg-lime-400 text-shade">
                       <Icon name={step.icon} className="size-4" />
                     </span>
                     <h2 className="mt-4 text-[0.9375rem] font-bold text-ink">{step.title}</h2>

@@ -15,10 +15,11 @@ type Variant = "primary" | "dark" | "subtle" | "onDark";
 type Size = "sm" | "md" | "lg";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-lime-400 text-ink hover:bg-lime-300",
-  dark: "bg-ink text-white hover:bg-ink-soft",
+  // `text-shade`, not `text-ink` — lime stays light, so its partner must stay dark
+  primary: "bg-lime-400 text-shade hover:bg-lime-300",
+  dark: "bg-contrast text-paper hover:bg-contrast/85",
   subtle: "bg-surface text-ink hover:bg-surface-strong",
-  onDark: "bg-white/10 text-white hover:bg-white/20",
+  onDark: "bg-white/10 text-paper hover:bg-white/20",
 };
 
 const sizes: Record<Size, string> = {

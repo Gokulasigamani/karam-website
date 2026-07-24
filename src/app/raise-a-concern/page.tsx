@@ -31,13 +31,13 @@ export default function RaiseConcernPage() {
           </Reveal>
 
           <Reveal delay={120}>
-            <aside className="rounded-[var(--radius-block)] bg-ink p-7 text-white lg:sticky lg:top-24 lg:p-8">
+            <aside className="card-pattern-invert rounded-[var(--radius-block)] bg-contrast p-7 text-paper lg:sticky lg:top-24 lg:p-8">
               <h2 className="text-[1.0625rem] font-bold">{concernPage.reassurance.title}</h2>
 
               <ul className="mt-5 space-y-4">
                 {concernPage.reassurance.points.map((point) => (
                   <li key={point} className="flex gap-3">
-                    <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-lime-400 text-ink">
+                    <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-lime-400 text-shade">
                       <Icon name="check" className="size-2.5" strokeWidth={3} />
                     </span>
                     <span className="text-[0.8125rem] leading-[1.65] text-white/60">

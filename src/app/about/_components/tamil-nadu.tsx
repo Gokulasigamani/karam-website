@@ -14,7 +14,7 @@ export function TamilNadu() {
   return (
     <Container className="pb-14 lg:pb-20">
       <Reveal>
-        <div className="relative isolate overflow-hidden rounded-[var(--radius-block)] bg-ink px-6 py-10 text-white sm:px-9 sm:py-11 lg:px-12 lg:py-12">
+        <div className="relative isolate overflow-hidden rounded-[var(--radius-block)] bg-shade px-6 py-10 text-paper sm:px-9 sm:py-11 lg:px-12 lg:py-12">
           <Image
             src={tamilNaduIntro.image.url}
             alt={tamilNaduIntro.image.alt}
@@ -25,9 +25,9 @@ export function TamilNadu() {
           {/* Black shade, angled so the copy side stays darkest */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/92 to-ink/72"
+            className="absolute inset-0 -z-10 bg-gradient-to-r from-shade via-shade/92 to-shade/72"
           />
-          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink/45" />
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-shade/45" />
 
           <div className="relative grid gap-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-14">
             <div>

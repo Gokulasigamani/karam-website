@@ -11,7 +11,7 @@ export function Founders() {
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:mt-10 lg:grid-cols-3 lg:gap-5">
         {founders.map((founder, index) => (
           <Reveal as="li" key={founder.name} delay={index * 90} className="h-full">
-            <article className="flex h-full flex-col rounded-[1.375rem] bg-surface p-3 transition-colors duration-300 hover:bg-surface-strong">
+            <article className="card-pattern flex h-full flex-col rounded-[1.375rem] bg-surface p-3 transition-colors duration-300 hover:bg-surface-strong">
               <div className="relative aspect-[4/5] overflow-hidden rounded-[1rem]">
                 <Image
                   src={founder.imageUrl}

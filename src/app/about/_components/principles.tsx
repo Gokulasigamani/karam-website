@@ -9,7 +9,7 @@ export function Principles() {
   return (
     <Container className="pb-16 lg:pb-20">
       <Reveal>
-        <div className="rounded-[var(--radius-block)] bg-ink px-6 py-12 text-white sm:px-10 sm:py-14 lg:px-14">
+        <div className="card-pattern-invert rounded-[var(--radius-block)] bg-contrast px-6 py-12 text-paper sm:px-10 sm:py-14 lg:px-14">
           <h2 className="max-w-2xl text-[1.625rem] leading-[1.15] font-extrabold sm:text-[2rem] lg:text-[2.25rem]">
             Three Rules We Do Not Bend.
           </h2>

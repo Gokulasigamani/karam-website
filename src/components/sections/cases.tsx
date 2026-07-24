@@ -29,7 +29,7 @@ export function Cases() {
 
 function CaseCard({ record }: { record: CaseRecord }) {
   return (
-    <article className="flex h-full flex-col rounded-[1.375rem] bg-surface p-3 transition-colors duration-300 hover:bg-surface-strong">
+    <article className="card-pattern flex h-full flex-col rounded-[1.375rem] bg-surface p-3 transition-colors duration-300 hover:bg-surface-strong">
       <div className="relative aspect-[16/10] overflow-hidden rounded-[1rem]">
         <Image
           src={record.imageUrl}

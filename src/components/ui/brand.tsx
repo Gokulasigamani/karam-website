@@ -38,9 +38,10 @@ export function StatusPill({
   className?: string;
 }) {
   const tones = {
-    lime: "bg-lime-400 text-ink",
-    dark: "bg-ink text-white",
-    light: "bg-white text-ink",
+    lime: "bg-lime-400 text-shade",
+    dark: "bg-contrast text-paper",
+    // Sits on photography, so both sides are fixed
+    light: "bg-paper text-shade",
   };
 
   return (

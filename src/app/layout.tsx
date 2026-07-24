@@ -4,6 +4,8 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { HashScroll } from "@/components/layout/hash-scroll";
 import { SplashScreen } from "@/components/layout/splash-screen";
+import { ScrollToTop } from "@/components/layout/scroll-to-top";
+import { PolicyNotice } from "@/components/layout/policy-notice";
 import { AppProviders } from "@/lib/providers/app-providers";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
@@ -43,8 +45,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang={siteConfig.locale} className={`${jakarta.variable} h-full`}>
-      <body className="flex min-h-full flex-col bg-white">
+    // next-themes writes the theme class on <html> before paint, which the
+    // server cannot know about — so hydration differences here are expected
+    <html
+      lang={siteConfig.locale}
+      className={`${jakarta.variable} h-full`}
+      suppressHydrationWarning
+    >
+      <body className="flex min-h-full flex-col bg-canvas">
         {/* Scroll-reveal content must never be invisible without JavaScript */}
         <noscript>
           <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
@@ -56,6 +64,8 @@ export default function RootLayout({
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <ScrollToTop />
+          <PolicyNotice />
         </AppProviders>
       </body>
     </html>

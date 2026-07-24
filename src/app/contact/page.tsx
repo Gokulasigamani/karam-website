@@ -31,8 +31,8 @@ export default function ContactPage() {
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
               {contactMethods.map((method, index) => (
                 <Reveal as="li" key={method.label} delay={index * 80}>
-                  <div className="rounded-[var(--radius-card)] bg-surface p-5 transition-colors duration-300 hover:bg-surface-strong">
-                    <span className="grid size-9 place-items-center rounded-lg bg-lime-400 text-ink">
+                  <div className="card-pattern rounded-[var(--radius-card)] bg-surface p-5 transition-colors duration-300 hover:bg-surface-strong">
+                    <span className="grid size-9 place-items-center rounded-lg bg-lime-400 text-shade">
                       <Icon name={method.icon} className="size-4" />
                     </span>
 
@@ -58,7 +58,7 @@ export default function ContactPage() {
             </ul>
 
             <Reveal delay={260}>
-              <div className="mt-4 rounded-[var(--radius-card)] bg-ink p-5 text-white">
+              <div className="card-pattern-invert mt-4 rounded-[var(--radius-card)] bg-contrast p-5 text-paper">
                 <p className="text-[0.8125rem] leading-[1.65] text-white/60">
                   Need help for someone right now? Raising a concern reaches volunteers in
                   that ward faster than this form does.

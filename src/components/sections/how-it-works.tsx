@@ -10,9 +10,9 @@ export function HowItWorks() {
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step) => (
           <li key={step.number}>
-            <Card className="flex h-full flex-col">
+            <Card className="card-pattern flex h-full flex-col">
               <div className="flex items-center justify-between">
-                <span className="grid size-10 place-items-center rounded-lg bg-lime-200 text-ink">
+                <span className="grid size-10 place-items-center rounded-lg bg-lime-200 text-shade">
                   <Icon name={step.icon} className="size-[1.125rem]" />
                 </span>
                 <span className="text-xs font-bold tracking-[0.1em] text-muted/60">

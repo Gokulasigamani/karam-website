@@ -35,7 +35,9 @@ export function PageBanner({
   return (
     <Container className={cn("pt-2 pb-12 lg:pb-16", className)}>
       <Reveal>
-        <div className="relative isolate overflow-hidden rounded-[var(--radius-block)] bg-ink px-6 py-12 text-white sm:px-10 sm:py-14 lg:px-14 lg:py-16">
+        {/* `shade`, not `contrast` — this sits over a photograph, so it must
+            stay black in both themes for the white type to hold up */}
+        <div className="relative isolate overflow-hidden rounded-[var(--radius-block)] bg-shade px-6 py-12 text-paper sm:px-10 sm:py-14 lg:px-14 lg:py-16">
           <Image
             src={image.url}
             alt={image.alt}
@@ -49,9 +51,9 @@ export function PageBanner({
               photograph, angled so the left side where the text sits is darkest */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/92 to-ink/70"
+            className="absolute inset-0 -z-10 bg-gradient-to-r from-shade via-shade/92 to-shade/70"
           />
-          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink/45" />
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-shade/45" />
 
           {/* Soft lime bloom, keeps the block from reading as a flat slab */}
           <div

@@ -2,13 +2,14 @@
 import { routes } from "@/constants/routes";
 import { Brand } from "@/components/ui/brand";
 import { SmoothLink } from "@/components/ui/smooth-link";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { MobileNav } from "./mobile-nav";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 bg-canvas/90 backdrop-blur-xl">
       <Container className="flex h-16 items-center justify-between gap-4 lg:h-[72px] lg:gap-6">
         <div className="flex items-center gap-5">
           <Brand className="text-ink" markClassName="text-lime-400" />
@@ -33,6 +34,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2 lg:gap-3">
+          <ThemeToggle />
           {/* Compact on phones, full size from `lg` where there is room */}
           <Button href={routes.raiseConcern} size="sm" className="lg:h-11 lg:px-5 lg:text-sm">
             Raise A Concern

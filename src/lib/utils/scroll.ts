@@ -28,9 +28,21 @@ export function scrollToId(id: string): boolean {
   const start = window.scrollY;
   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
   const end = Math.max(0, Math.min(target.getBoundingClientRect().top + start - offset, maxScroll));
+
+  tweenTo(end);
+  return true;
+}
+
+/** Same tween, back to the top of the document. */
+export function scrollToTop(): void {
+  tweenTo(0);
+}
+
+function tweenTo(end: number): void {
+  const start = window.scrollY;
   const distance = end - start;
 
-  if (Math.abs(distance) < 2) return true;
+  if (Math.abs(distance) < 2) return;
 
   // Reduced motion shortens the tween rather than removing it
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -71,5 +83,4 @@ export function scrollToId(id: string): boolean {
   };
 
   requestAnimationFrame(step);
-  return true;
 }

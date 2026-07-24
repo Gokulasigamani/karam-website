@@ -29,7 +29,7 @@ export function Story() {
           </div>
 
           <Reveal delay={320}>
-            <blockquote className="mt-9 rounded-[var(--radius-card)] bg-surface p-6 lg:p-8">
+            <blockquote className="card-pattern mt-9 rounded-[var(--radius-card)] bg-surface p-6 lg:p-8">
               <p className="text-[1.0625rem] leading-[1.5] font-bold text-ink lg:text-[1.25rem]">
                 &ldquo;{story.pullQuote}&rdquo;
               </p>

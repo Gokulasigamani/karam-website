@@ -98,7 +98,7 @@ export default function PrivacyPage() {
             ))}
 
             <Reveal>
-              <div className="mt-6 rounded-[var(--radius-block)] bg-surface p-7 lg:p-8">
+              <div className="card-pattern mt-6 rounded-[var(--radius-block)] bg-surface p-7 lg:p-8">
                 <h2 className="text-[1.0625rem] font-extrabold text-ink">
                   Something here unclear?
                 </h2>

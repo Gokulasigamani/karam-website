@@ -54,7 +54,7 @@ export function BannerCycle({ points }: { points: StatePoint[] }) {
                   visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: EASE } },
                   exit: { opacity: 0, scale: 0.75, transition: { duration: 0.22 } },
                 }}
-                className="grid size-9 shrink-0 place-items-center rounded-xl bg-lime-400 text-ink"
+                className="grid size-9 shrink-0 place-items-center rounded-xl bg-lime-400 text-shade"
               >
                 <Icon name={active.icon} className="size-[1.0625rem]" />
               </motion.span>

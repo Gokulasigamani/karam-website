@@ -19,8 +19,8 @@ export function ConcernForm() {
 
   if (state.status === "success") {
     return (
-      <div className="rounded-[var(--radius-block)] bg-surface p-8 text-center lg:p-12">
-        <span className="mx-auto grid size-12 place-items-center rounded-2xl bg-lime-400 text-ink">
+      <div className="card-pattern rounded-[var(--radius-block)] bg-surface p-8 text-center lg:p-12">
+        <span className="mx-auto grid size-12 place-items-center rounded-2xl bg-lime-400 text-shade">
           <Icon name="check" className="size-6" strokeWidth={2.5} />
         </span>
         <h2 className="mt-6 text-[1.375rem] font-extrabold text-ink">Concern received.</h2>
@@ -34,7 +34,7 @@ export function ConcernForm() {
   const errors = state.fieldErrors ?? {};
 
   return (
-    <form action={formAction} className="rounded-[var(--radius-block)] bg-white">
+    <form action={formAction} className="rounded-[var(--radius-block)]">
       <FormMessage state={state} className="mb-6" />
 
       <div className="grid gap-5 sm:grid-cols-2">
