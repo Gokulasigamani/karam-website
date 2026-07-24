@@ -45,7 +45,7 @@ export function MobileNav() {
 
       <div
         className={cn(
-          "fixed inset-x-0 top-16 z-40 bg-canvas/95 px-4 pb-6 backdrop-blur-xl transition-opacity duration-200",
+          "fixed inset-x-0 top-16 z-40 bg-canvas/95 px-5 pt-1 pb-7 backdrop-blur-xl transition-opacity duration-200",
           open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         )}
       >
@@ -65,14 +65,26 @@ export function MobileNav() {
           </ul>
         </nav>
 
-        <Button
-          href={routes.raiseConcern}
-          size="lg"
-          className="mt-6 w-full"
-          onClick={() => setOpen(false)}
-        >
-          Raise A Concern
-        </Button>
+        {/* The header CTA lives here on small screens */}
+        <div className="mt-6 flex flex-col gap-2.5">
+          <Button
+            href={routes.raiseConcern}
+            size="lg"
+            className="w-full"
+            onClick={() => setOpen(false)}
+          >
+            Raise A Concern
+          </Button>
+          <Button
+            href={routes.volunteer}
+            variant="subtle"
+            size="lg"
+            className="w-full"
+            onClick={() => setOpen(false)}
+          >
+            Volunteer Near You
+          </Button>
+        </div>
       </div>
     </div>
   );

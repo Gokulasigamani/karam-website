@@ -70,7 +70,7 @@ export function ScrollToTop() {
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.94 }}
-          className="scroll-top group fixed right-4 bottom-4 z-40 grid size-12 cursor-pointer place-items-center rounded-full bg-contrast text-paper shadow-[var(--shadow-fab)] transition-[bottom] duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:right-7 sm:bottom-7 sm:size-14"
+          className="scroll-top group fixed right-5 bottom-5 z-40 grid size-12 cursor-pointer place-items-center rounded-full bg-contrast text-paper shadow-[var(--shadow-fab)] transition-[bottom] duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:right-7 sm:bottom-7 sm:size-14"
         >
           {/* Progress ring */}
           <svg

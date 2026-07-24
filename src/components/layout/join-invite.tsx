@@ -123,7 +123,9 @@ export function JoinInvite() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           onClick={close}
-          className="fixed inset-0 z-[90] grid place-items-center overflow-y-auto bg-shade/55 p-4 backdrop-blur-sm"
+          // Bottom sheet on phones, centred dialog from `sm`. `items-end` plus
+          // `overflow-y-auto` means a tall card scrolls instead of being clipped.
+          className="fixed inset-0 z-[90] flex items-end justify-center overflow-y-auto overscroll-contain bg-shade/55 backdrop-blur-sm sm:items-center sm:p-5"
         >
           <motion.div
             ref={dialogRef}
@@ -133,11 +135,11 @@ export function JoinInvite() {
             tabIndex={-1}
             // Clicks inside must not reach the backdrop's close handler
             onClick={(event) => event.stopPropagation()}
-            initial={{ opacity: 0, y: 28, scale: 0.96 }}
+            initial={{ opacity: 0, y: 40, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.97 }}
+            exit={{ opacity: 0, y: 32, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 280, damping: 28, mass: 0.9 }}
-            className="relative w-full max-w-lg overflow-hidden rounded-[var(--radius-block)] bg-elevated shadow-[var(--shadow-pop)] outline-none"
+            className="relative my-0 w-full max-w-lg overflow-hidden rounded-t-[var(--radius-block)] bg-elevated shadow-[var(--shadow-pop)] outline-none sm:my-auto sm:rounded-[var(--radius-block)]"
           >
             <button
               type="button"
@@ -148,9 +150,9 @@ export function JoinInvite() {
               <Icon name="close" className="size-4" />
             </button>
 
-            <HelpingHands className="aspect-[16/6]" />
+            <HelpingHands className="aspect-[16/7] sm:aspect-[16/6]" />
 
-            <div className="p-6 sm:p-8">
+            <div className="px-6 pt-7 pb-8 sm:p-8">
               <span className="text-[0.6875rem] font-bold tracking-[0.14em] text-muted uppercase">
                 {joinInvite.eyebrow}
               </span>
@@ -182,8 +184,15 @@ export function JoinInvite() {
                 ))}
               </dl>
 
-              <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
-                <Button href={routes.raiseConcern} size="lg" onClick={close} className="flex-1">
+              {/* `w-full` on the column axis — `flex-1` alone would stretch
+                  them vertically, not horizontally */}
+              <div className="mt-7 flex flex-col gap-2.5 sm:flex-row">
+                <Button
+                  href={routes.raiseConcern}
+                  size="lg"
+                  onClick={close}
+                  className="w-full sm:flex-1"
+                >
                   {joinInvite.primaryLabel}
                 </Button>
                 <Button
@@ -191,13 +200,13 @@ export function JoinInvite() {
                   variant="subtle"
                   size="lg"
                   onClick={close}
-                  className="flex-1"
+                  className="w-full sm:flex-1"
                 >
                   {joinInvite.secondaryLabel}
                 </Button>
               </div>
 
-              <p className="mt-4 text-center text-[0.6875rem] text-muted">
+              <p className="mt-5 text-center text-[0.6875rem] leading-relaxed text-muted">
                 {joinInvite.footnote}
               </p>
             </div>

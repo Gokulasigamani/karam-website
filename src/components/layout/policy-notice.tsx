@@ -69,7 +69,7 @@ export function PolicyNotice() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: "130%", opacity: 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 30, mass: 0.9 }}
-          className="fixed inset-x-4 bottom-4 z-50 sm:inset-x-auto sm:bottom-7 sm:left-7 sm:max-w-sm"
+          className="fixed inset-x-5 bottom-5 z-50 sm:inset-x-auto sm:bottom-7 sm:left-7 sm:max-w-sm"
         >
           <motion.div
             initial="hidden"

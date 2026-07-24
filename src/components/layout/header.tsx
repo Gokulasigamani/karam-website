@@ -35,8 +35,9 @@ export function Header() {
 
         <div className="flex items-center gap-2 lg:gap-3">
           <ThemeToggle />
-          {/* Compact on phones, full size from `lg` where there is room */}
-          <Button href={routes.raiseConcern} size="sm" className="lg:h-11 lg:px-5 lg:text-sm">
+          {/* Below `lg` this lives inside the menu instead, so the bar stays
+              to a mark, a toggle and one control */}
+          <Button href={routes.raiseConcern} className="hidden lg:inline-flex">
             Raise A Concern
           </Button>
           <MobileNav />
