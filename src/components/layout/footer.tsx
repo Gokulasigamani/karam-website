@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { footerNav } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/container";
@@ -5,7 +6,9 @@ import { SmoothLink } from "@/components/ui/smooth-link";
 import { SocialLinks } from "@/components/ui/social-links";
 import { Logo } from "@/components/ui/icons";
 
-export function Footer() {
+export async function Footer() {
+  const t = await getTranslations();
+
   return (
     <Container as="footer" className="pb-5">
       <div className="card-pattern-invert rounded-[var(--radius-block)] bg-contrast px-6 py-12 text-paper sm:px-10 sm:py-14 lg:px-14">
@@ -16,22 +19,22 @@ export function Footer() {
               <span>{siteConfig.name}</span>
             </div>
             <p className="mt-4 max-w-[16rem] text-sm leading-[1.7] text-white/55">
-              {siteConfig.tagline}. Karam does not collect or handle donations.
+              {t("footer.tagline")}
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
             {footerNav.map((group) => (
-              <div key={group.title}>
-                <h3 className="text-sm font-semibold text-white">{group.title}</h3>
+              <div key={group.titleKey}>
+                <h3 className="text-sm font-semibold text-white">{t(`nav.${group.titleKey}`)}</h3>
                 <ul className="mt-4 space-y-2.5">
                   {group.items.map((item) => (
-                    <li key={item.label}>
+                    <li key={item.key}>
                       <SmoothLink
                         href={item.href}
                         className="text-sm text-white/55 transition-colors hover:text-lime-400"
                       >
-                        {item.label}
+                        {t(`nav.${item.key}`)}
                       </SmoothLink>
                     </li>
                   ))}
@@ -45,7 +48,7 @@ export function Footer() {
           <p className="text-sm leading-relaxed text-white/55">
             &copy; {new Date().getFullYear()} {siteConfig.name}.
             <br />
-            All rights reserved.
+            {t("footer.rights")}
           </p>
           <SocialLinks
             itemClassName="bg-white/5 text-white hover:bg-white/12"

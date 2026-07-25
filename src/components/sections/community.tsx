@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { communityStat, statPhotos, type StatPhoto } from "@/content/stats";
+import { getTranslations } from "next-intl/server";
+import { statPhotos, type StatPhoto } from "@/content/stats";
 import { routes } from "@/constants/routes";
 import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,9 @@ const rightPhotos = statPhotos.slice(2);
  *
  * Every photo is portrait and narrow, which keeps the section short.
  */
-export function Community() {
+export async function Community() {
+  const t = await getTranslations();
+
   return (
     <Section id="join" className="py-12 sm:py-14 lg:py-16">
       <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)_minmax(0,7.5rem)] lg:gap-10 xl:grid-cols-[minmax(0,8.5rem)_minmax(0,1fr)_minmax(0,8.5rem)] xl:gap-14">
@@ -25,18 +28,18 @@ export function Community() {
         <div className="text-center">
           <Reveal>
             <p className="text-[0.9375rem] font-medium text-ink sm:text-base lg:text-lg">
-              {communityStat.lead}
+              {t("community.lead")}
             </p>
 
             <p
               className="my-1 leading-[0.95] font-extrabold tracking-[-0.055em] text-ink tabular-nums"
               style={{ fontSize: "clamp(2.5rem, 8vw, 5.5rem)" }}
             >
-              {communityStat.value}
+              {t("community.value")}
             </p>
 
             <p className="mx-auto max-w-lg text-[0.9375rem] font-medium text-ink sm:text-base lg:text-lg">
-              {communityStat.trail}
+              {t("community.trail")}
             </p>
           </Reveal>
 
@@ -61,10 +64,10 @@ export function Community() {
           <Reveal delay={160}>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Button href={routes.volunteer} size="lg">
-                {communityStat.ctaLabel}
+                {t("community.join")}
               </Button>
               <Button href={routes.raiseConcern} variant="subtle" size="lg">
-                {communityStat.secondaryCtaLabel}
+                {t("common.raiseConcern")}
               </Button>
             </div>
           </Reveal>

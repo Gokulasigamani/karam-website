@@ -9,6 +9,11 @@ const socials: { name: IconName; label: string; href: string }[] = [
   { name: "linkedin", label: "LinkedIn", href: siteConfig.links.linkedin },
 ];
 
+/** A link is "set" once it points somewhere real — `#` / empty is a placeholder. */
+function isSet(href: string): boolean {
+  return href.trim() !== "" && href.trim() !== "#";
+}
+
 export function SocialLinks({
   className,
   itemClassName,
@@ -18,9 +23,13 @@ export function SocialLinks({
   itemClassName?: string;
   showLabels?: boolean;
 }) {
+  // Never ship a dead "#" link — show only profiles that have a real URL.
+  const active = socials.filter((social) => isSet(social.href));
+  if (active.length === 0) return null;
+
   return (
     <ul className={cn("flex flex-wrap items-center gap-2 sm:gap-3", className)}>
-      {socials.map((social) => (
+      {active.map((social) => (
         <li key={social.name}>
           <a
             href={social.href}

@@ -273,3 +273,177 @@ export const privacySections: PrivacySection[] = [
     ],
   },
 ];
+
+/* ---------------------------------------------------------------- Accessibility */
+
+export const accessibilityPage = {
+  eyebrow: "Accessibility",
+  title: "Usable By Everyone, Or It Does Not Work.",
+  image: {
+    url: "https://picsum.photos/seed/karam-banner-accessibility/1920/700",
+    alt: "A volunteer reading a form aloud to an elderly man on a veranda",
+  },
+  rotating: {
+    prefix: "Built to work",
+    items: [
+      "with a screen reader",
+      "at 200% zoom",
+      "without a mouse",
+      "on a five-year-old phone",
+      "on a weak connection",
+    ],
+  },
+  description:
+    "The people who most need Karam are often the least well served by the web. Older phones, small data packs, poor eyesight, no reading confidence. This page says what we hold ourselves to, and where we currently fall short.",
+  lastUpdated: "24 July 2026",
+};
+
+export const accessibilitySections: PrivacySection[] = [
+  {
+    heading: "The standard we hold to",
+    paragraphs: [
+      "Karam targets WCAG 2.2 Level AA. That is the level most public bodies in India are held to, and we see no reason to ask less of ourselves than we ask of the departments we escalate cases to.",
+      "AA is a floor, not a finish line. Where meeting it still leaves someone stuck, we treat that as a fault to fix rather than a box already ticked.",
+    ],
+  },
+  {
+    heading: "What that means in practice",
+    paragraphs: [
+      "These are the things we check before anything ships, not afterwards.",
+    ],
+    bullets: [
+      "Every page works end to end with a keyboard alone, and the focused element is always visible.",
+      "Text meets AA contrast in both the light and dark themes, and the theme choice is remembered.",
+      "Text can be zoomed to 200% without content being cut off or overlapping.",
+      "Images that carry meaning have alt text; images that are decoration are hidden from screen readers.",
+      "Forms use real labels, describe their errors in words, and never rely on colour alone to signal a problem.",
+      "Motion is decorative only, and is reduced automatically when the device asks for reduced motion.",
+      "Content that reveals on scroll stays visible when JavaScript does not load.",
+    ],
+  },
+  {
+    heading: "Where we currently fall short",
+    paragraphs: [
+      "Naming these is more useful than claiming they do not exist.",
+    ],
+    bullets: [
+      "The site is currently English-only. Tamil is the first language of most people we serve, and a Tamil version is the single largest accessibility gap we have.",
+      "Case descriptions are written by members and volunteers, so reading difficulty varies. We are not yet editing them for plain language.",
+      "We have tested with NVDA and VoiceOver, but not yet with TalkBack on low-end Android, which is what most of our members actually use.",
+      "Photographs on case pages are supplied by volunteers and their alt text is not always as descriptive as it should be.",
+    ],
+  },
+  {
+    heading: "If something here blocks you",
+    paragraphs: [
+      "Tell us and we will fix it. Describe what you were trying to do, what device or assistive technology you were using, and where it stopped working. An accessibility fault is treated as a live defect, not a feature request.",
+      "If the website itself is the barrier, you do not have to use it. A volunteer can raise a concern on your behalf — that route exists precisely because a form on a screen is not reachable for everyone.",
+    ],
+  },
+  {
+    heading: "Reviewing this page",
+    paragraphs: [
+      "We review this statement whenever a significant part of the site changes, and at minimum once a year. The date above is the last time it was checked against the live site rather than the last time the wording was edited.",
+    ],
+  },
+];
+
+/* ------------------------------------------------------------------------ Terms */
+
+export const termsPage = {
+  eyebrow: "Terms Of Use",
+  title: "What You Can Expect, And What We Ask.",
+  image: {
+    url: "https://picsum.photos/seed/karam-banner-terms/1920/700",
+    alt: "Two people signing a community register at a table",
+  },
+  rotating: {
+    prefix: "In short:",
+    items: [
+      "we never handle money",
+      "we are not a government body",
+      "raise things in good faith",
+      "verification comes before escalation",
+      "you can leave at any time",
+    ],
+  },
+  description:
+    "These terms cover using the Karam website and taking part as a member or volunteer. They are written to be read, not to be survived. If a clause here does not make sense to you, that is our failure and we will rewrite it.",
+  lastUpdated: "24 July 2026",
+};
+
+export const termsSections: PrivacySection[] = [
+  {
+    heading: "What Karam is",
+    paragraphs: [
+      "Karam is a community platform. Members raise concerns, volunteers verify them in person, and verified cases are routed to the government department with the authority to resolve them.",
+      "Karam is not a government body and has no statutory power. We cannot compel any department to act, guarantee an outcome, or promise a timeframe. What we can do is make sure a case reaches the right desk with evidence attached, and stays visible until it is answered.",
+    ],
+  },
+  {
+    heading: "We never handle money",
+    paragraphs: [
+      "Karam does not accept donations, collect fees, hold funds or process payments of any kind, from anyone, ever. There is no circumstance in which a genuine Karam volunteer or staff member will ask you for money.",
+      "If someone asks you to pay for a case to be raised, verified, escalated or resolved, they are not acting for Karam. Report it to us and we will remove them and, where appropriate, refer it onward.",
+    ],
+  },
+  {
+    heading: "Raising a concern in good faith",
+    paragraphs: [
+      "When you raise a concern you are asking neighbours to spend their time on it and asking an official to act on it. Both are real costs, so what you submit must be true as far as you know it.",
+    ],
+    bullets: [
+      "Describe the situation accurately, including anything that weakens it.",
+      "Raise a concern on someone else's behalf only with their knowledge and agreement.",
+      "Do not submit a concern to harass, defame or pressure a private individual.",
+      "Do not raise the same concern repeatedly to inflate its apparent support.",
+      "Do not include another person's private details without their consent.",
+    ],
+  },
+  {
+    heading: "If you volunteer",
+    paragraphs: [
+      "Verification is the part of Karam that everything else rests on. A case that reaches a department carries your confirmation with it.",
+    ],
+    bullets: [
+      "Verify only what you have seen yourself. Do not confirm a case on someone's word.",
+      "Never ask for or accept money, goods or favours in connection with a case.",
+      "Treat what you learn in someone's home as private, including after the case closes.",
+      "Do not represent yourself as an official, or as speaking for any department.",
+      "In an emergency, contact the emergency services first. Karam is not an emergency service.",
+    ],
+  },
+  {
+    heading: "Cases and content you post",
+    paragraphs: [
+      "You keep ownership of what you write and the photographs you upload. By posting them you give Karam permission to display them on the case, include them in the file sent to the handling department, and keep them in the case record.",
+      "We may edit a case for clarity, remove details that expose someone unnecessarily, or take a case down entirely if it breaches these terms. Where we take something down we will say why.",
+    ],
+  },
+  {
+    heading: "Accounts",
+    paragraphs: [
+      "You are responsible for what happens under your account, so keep your login to yourself. One person, one account — duplicate accounts distort how much support a case appears to have.",
+      "You can close your account at any time. We may suspend an account that breaches these terms, and we will tell you why when we do.",
+    ],
+  },
+  {
+    heading: "Limits of our responsibility",
+    paragraphs: [
+      "Karam is provided as it is. We work to keep case information accurate, but much of it comes from members and volunteers and we cannot guarantee that every detail is correct or current.",
+      "We are not responsible for the decisions or conduct of any government department, officer or third party, nor for the outcome of any case. We are not liable for indirect or consequential loss arising from use of the platform. Nothing here limits liability that cannot be limited under Indian law.",
+    ],
+  },
+  {
+    heading: "Governing law",
+    paragraphs: [
+      "These terms are governed by the laws of India, and the courts of Tamil Nadu have jurisdiction over any dispute arising from them.",
+    ],
+  },
+  {
+    heading: "Changes to these terms",
+    paragraphs: [
+      "If we change these terms in a way that affects you, we will say so on this page and notify registered members before the change takes effect. Continuing to use Karam after that means the updated terms apply.",
+    ],
+  },
+];

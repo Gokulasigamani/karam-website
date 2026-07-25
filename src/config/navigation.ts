@@ -1,7 +1,8 @@
 import { routes } from "@/constants/routes";
 
 export interface NavItem {
-  label: string;
+  /** Key under the `nav` message namespace — the label is translated at render. */
+  key: string;
   href: string;
   /** Opens in a new tab and gets `rel="noreferrer"`. */
   external?: boolean;
@@ -9,39 +10,40 @@ export interface NavItem {
 
 /** Header navigation. */
 export const mainNav: NavItem[] = [
-  { label: "How It Works", href: routes.howItWorks },
-  { label: "Live Cases", href: routes.cases },
-  { label: "Volunteer", href: routes.volunteer },
-  { label: "About Us", href: routes.about },
+  { key: "howItWorks", href: routes.howItWorks },
+  { key: "liveCases", href: routes.cases },
+  { key: "volunteer", href: routes.volunteer },
+  { key: "aboutUs", href: routes.about },
 ];
 
-/** Footer link groups. */
-export const footerNav: { title: string; items: NavItem[] }[] = [
+/** Footer link groups. `titleKey` and each item `key` live under `nav`. */
+export const footerNav: { titleKey: string; items: NavItem[] }[] = [
   {
-    title: "Take Action",
+    titleKey: "groupTakeAction",
     items: [
-      { label: "Raise A Concern", href: routes.raiseConcern },
-      { label: "Volunteers Near You", href: routes.volunteer },
-      { label: "Live Cases", href: routes.cases },
-      { label: "What We Work On", href: routes.causes },
+      { key: "raiseConcern", href: routes.raiseConcern },
+      { key: "volunteersNearYou", href: routes.volunteer },
+      { key: "liveCases", href: routes.cases },
+      { key: "whatWeWorkOn", href: routes.causes },
     ],
   },
   {
-    title: "Support",
+    titleKey: "groupSupport",
     items: [
-      { label: "How It Works", href: routes.howItWorks },
-      { label: "FAQ", href: routes.faq },
-      { label: "Contact Us", href: routes.contact },
-      { label: "Official Channels", href: routes.officials },
+      { key: "howItWorks", href: routes.howItWorks },
+      { key: "faq", href: routes.faq },
+      { key: "contactUs", href: routes.contact },
+      { key: "officialChannels", href: routes.officials },
     ],
   },
   {
-    title: "Karam",
+    titleKey: "groupKaram",
     items: [
-      { label: "About Us", href: routes.about },
-      { label: "Our Founders", href: `${routes.about}#founders` },
-      { label: "Privacy Policy", href: routes.privacy },
-      { label: "Accessibility", href: routes.privacy },
+      { key: "aboutUs", href: routes.about },
+      { key: "ourFounders", href: `${routes.about}#founders` },
+      { key: "privacy", href: routes.privacy },
+      { key: "terms", href: routes.terms },
+      { key: "accessibility", href: routes.accessibility },
     ],
   },
 ];

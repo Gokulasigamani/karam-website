@@ -1,0 +1,18 @@
+/** The languages the site speaks. English is the default for a new visitor. */
+export const locales = ["en", "ta"] as const;
+export type Locale = (typeof locales)[number];
+
+export const defaultLocale: Locale = "en";
+
+/** The cookie that remembers a visitor's choice. */
+export const LOCALE_COOKIE = "NEXT_LOCALE";
+
+/** Label shown for each language in the switcher — each in its own script. */
+export const localeNames: Record<Locale, string> = {
+  en: "EN",
+  ta: "தமிழ்",
+};
+
+export function isLocale(value: string | undefined): value is Locale {
+  return value === "en" || value === "ta";
+}

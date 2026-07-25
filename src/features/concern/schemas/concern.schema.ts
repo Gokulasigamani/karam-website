@@ -23,26 +23,31 @@ export const visibilityOptions = [
 /** Indian mobile numbers, with or without spaces or a +91 prefix. */
 const phonePattern = /^(?:\+?91[\s-]?)?[6-9]\d{9}$/;
 
+/**
+ * Validation messages are translation keys (see the `validation` namespace),
+ * resolved to text at display time in both the client hook and the server
+ * action — so errors are localised the same way everywhere.
+ */
 export const concernSchema = z.object({
-  fullName: z.string().min(2, "Please enter your name."),
+  fullName: z.string().min(2, "validation.nameRequired"),
   phone: z
     .string()
-    .min(1, "A phone number is required so volunteers can reach you.")
+    .min(1, "validation.phoneRequiredConcern")
     .refine((value) => phonePattern.test(value.replace(/\s|-/g, "")), {
-      message: "Enter a valid 10-digit mobile number.",
+      message: "validation.phoneInvalid",
     }),
-  email: z.union([z.email("Enter a valid email address."), z.literal("")]),
-  category: z.enum(concernCategories, { message: "Choose a category." }),
-  district: z.string().min(2, "Choose a district."),
-  locality: z.string().min(2, "Add the ward, village or street."),
-  title: z.string().min(6, "Give the concern a short title (at least 6 characters)."),
+  email: z.union([z.email("validation.emailInvalid"), z.literal("")]),
+  category: z.enum(concernCategories, { message: "validation.categoryRequired" }),
+  district: z.string().min(2, "validation.districtRequired"),
+  locality: z.string().min(2, "validation.localityRequired"),
+  title: z.string().min(6, "validation.titleRequired"),
   description: z
     .string()
-    .min(30, "Describe the situation in at least 30 characters so volunteers can act on it.")
-    .max(2000, "Please keep this under 2000 characters."),
-  urgency: z.enum(urgencyLevels, { message: "Choose how urgent this is." }),
-  visibility: z.enum(["public", "private"], { message: "Choose a visibility option." }),
-  consent: z.literal("on", { message: "Please confirm the details are accurate." }),
+    .min(30, "validation.descriptionMin")
+    .max(2000, "validation.descriptionMax"),
+  urgency: z.enum(urgencyLevels, { message: "validation.urgencyRequired" }),
+  visibility: z.enum(["public", "private"], { message: "validation.visibilityRequired" }),
+  consent: z.literal("on", { message: "validation.consentConcern" }),
 });
 
 export type ConcernInput = z.infer<typeof concernSchema>;

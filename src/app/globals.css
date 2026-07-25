@@ -55,6 +55,9 @@
   --danger-soft: #fdeaea;
   --success: #197a4b;
   --success-soft: #e8f6ee;
+  /* Lime tint for hover washes — bright lime itself is fixed, but the wash
+     behind text must flip with the theme or the text disappears into it. */
+  --lime-soft: #f8fee9;
 
   --pattern-line: rgb(10 10 10 / 0.08);
   --shadow-pop: 0 20px 60px -15px rgb(10 10 10 / 0.35);
@@ -77,6 +80,8 @@
   --danger-soft: #2a1416;
   --success: #7ae0aa;
   --success-soft: #0f2419;
+  /* A dark lime well, so light `--ink` text stays legible over the hover wash */
+  --lime-soft: #1b2708;
 
   --pattern-line: rgb(255 255 255 / 0.07);
   --shadow-pop: 0 20px 60px -15px rgb(0 0 0 / 0.75);
@@ -84,7 +89,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-jakarta);
+  /* Jakarta for Latin; Tamil glyphs fall through to Noto Sans Tamil. */
+  --font-sans: var(--font-jakarta), var(--font-noto-tamil);
 
   --color-canvas: var(--canvas);
   --color-elevated: var(--elevated);
@@ -100,6 +106,7 @@
   --color-danger-soft: var(--danger-soft);
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
+  --color-lime-soft: var(--lime-soft);
 }
 
 /* --------------------------------------------------------------------------- */

@@ -1,0 +1,222 @@
+import "server-only";
+
+import { getDb } from "@/lib/db/mongo";
+import type { CaseEvent, CaseRecord } from "@/content/cases";
+
+const COLLECTION = "cases";
+
+/** Pending cases are awaiting verification and are never shown publicly. */
+const PUBLIC_FILTER = { status: { $ne: "Pending" as const } };
+
+async function collection() {
+  const db = await getDb();
+  return db.collection<CaseRecord>(COLLECTION);
+}
+
+/* --------------------------------------------------------------- Public reads */
+
+/**
+ * Publicly listable cases, most-progressed first. `_id` is projected out so the
+ * documents match `CaseRecord` exactly.
+ *
+ * A read failure degrades to an empty list rather than throwing: a database blip
+ * should not fail the build or take the site down. Pages are cached with ISR, so
+ * the next revalidation fills them in once the database recovers.
+ */
+export async function getCases(): Promise<CaseRecord[]> {
+  try {
+    return await (await collection())
+      .find(PUBLIC_FILTER, { projection: { _id: 0 } })
+      .sort({ progress: -1 })
+      .toArray();
+  } catch (error) {
+    console.error("getCases: database read failed, returning empty list", error);
+    return [];
+  }
+}
+
+/** A single publicly listable case, or `null` for an unknown/pending id. */
+export async function getPublicCaseById(id: string): Promise<CaseRecord | null> {
+  try {
+    return await (await collection()).findOne(
+      { id, ...PUBLIC_FILTER },
+      { projection: { _id: 0 } },
+    );
+  } catch (error) {
+    console.error(`getPublicCaseById(${id}): database read failed`, error);
+    return null;
+  }
+}
+
+/* ------------------------------------------------------------- Internal reads */
+
+/** Any case by id, regardless of status. For verify/admin views. */
+export async function getCaseByIdAny(id: string): Promise<CaseRecord | null> {
+  return (await collection()).findOne({ id }, { projection: { _id: 0 } });
+}
+
+/** Every case a member has raised, newest first. */
+export async function getCasesRaisedBy(userId: string): Promise<CaseRecord[]> {
+  try {
+    return await (await collection())
+      .find({ raisedByUserId: userId }, { projection: { _id: 0 } })
+      .sort({ createdAt: -1 })
+      .toArray();
+  } catch (error) {
+    console.error("getCasesRaisedBy: read failed", error);
+    return [];
+  }
+}
+
+/** Every pending case — the admin can verify from anywhere. */
+export async function getPendingCases(): Promise<CaseRecord[]> {
+  try {
+    return await (await collection())
+      .find({ status: "Pending" }, { projection: { _id: 0 } })
+      .sort({ createdAt: 1 })
+      .toArray();
+  } catch (error) {
+    console.error("getPendingCases: read failed", error);
+    return [];
+  }
+}
+
+/** Pending cases in a district, for a volunteer's verify queue. */
+export async function getPendingCasesInDistrict(district: string): Promise<CaseRecord[]> {
+  try {
+    return await (await collection())
+      .find({ status: "Pending", district }, { projection: { _id: 0 } })
+      .sort({ createdAt: 1 })
+      .toArray();
+  } catch (error) {
+    console.error("getPendingCasesInDistrict: read failed", error);
+    return [];
+  }
+}
+
+/** Every case, any status, newest first — for the admin console. */
+export async function getAllCases(): Promise<CaseRecord[]> {
+  try {
+    return await (await collection())
+      .find({}, { projection: { _id: 0 } })
+      .sort({ createdAt: -1 })
+      .toArray();
+  } catch (error) {
+    console.error("getAllCases: read failed", error);
+    return [];
+  }
+}
+
+/* -------------------------------------------------------------------- Writes */
+
+export async function insertCase(record: CaseRecord): Promise<void> {
+  await (await collection()).insertOne({ ...record });
+}
+
+/** Plain inputs a raised concern hands to case creation. Intentionally not the
+ *  concern schema type — cases must not import the concern feature. */
+export interface CaseFromConcern {
+  reference: string;
+  category: string;
+  title: string;
+  description: string;
+  district: string;
+  locality: string;
+  raisedByUserId: string;
+}
+
+/**
+ * Creates the Pending case that a concern becomes. The case id is the lowercased
+ * reference, so it is stable and human-traceable. Returns the id.
+ */
+export async function createCaseFromConcern(input: CaseFromConcern): Promise<string> {
+  const id = input.reference.toLowerCase();
+  const raisedOn = new Date().toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  const record: CaseRecord = {
+    id,
+    category: input.category,
+    title: input.title,
+    summary: input.description.length > 160 ? `${input.description.slice(0, 157)}…` : input.description,
+    location: `${input.locality}, ${input.district}`,
+    status: "Pending",
+    routedTo: "Not yet routed",
+    supporters: 0,
+    daysOpen: 0,
+    progress: 10,
+    imageUrl: "",
+    imageAlt: "",
+    raisedOn,
+    background: [input.description],
+    needs: [],
+    timeline: [
+      {
+        date: raisedOn,
+        title: "Concern raised",
+        detail: "Raised by a member. Awaiting verification by two local volunteers.",
+        done: true,
+      },
+    ],
+    raisedByUserId: input.raisedByUserId,
+    verifications: [],
+    district: input.district,
+    createdAt: new Date().toISOString(),
+  };
+
+  await insertCase(record);
+  return id;
+}
+
+/**
+ * Records a volunteer's verification, but only if they have not already verified
+ * this case. Returns whether a new verification was added, so the caller can
+ * decide about promotion without a race.
+ */
+export async function addVerification(
+  id: string,
+  userId: string,
+  at: string,
+): Promise<boolean> {
+  const result = await (await collection()).updateOne(
+    { id, status: "Pending", "verifications.userId": { $ne: userId } },
+    { $push: { verifications: { userId, at } } },
+  );
+  return result.modifiedCount > 0;
+}
+
+/** Promotes a pending case to Verified (public). No-op if already promoted. */
+export async function promoteToVerified(id: string, event: CaseEvent): Promise<void> {
+  await (await collection()).updateOne(
+    { id, status: "Pending" },
+    { $set: { status: "Verified", progress: 40 }, $push: { timeline: event } },
+  );
+}
+
+/** Routes a case to a department and marks it Escalated. */
+export async function routeCase(
+  id: string,
+  routedTo: string,
+  event: CaseEvent,
+): Promise<void> {
+  await (await collection()).updateOne(
+    { id },
+    { $set: { status: "Escalated", routedTo, progress: 65 }, $push: { timeline: event } },
+  );
+}
+
+/** Appends a dated update to the resolution trail. */
+export async function appendTimelineEvent(id: string, event: CaseEvent): Promise<void> {
+  await (await collection()).updateOne({ id }, { $push: { timeline: event } });
+}
+
+/** Marks a case Resolved. */
+export async function resolveCase(id: string, event: CaseEvent): Promise<void> {
+  await (await collection()).updateOne(
+    { id },
+    { $set: { status: "Resolved", progress: 100 }, $push: { timeline: event } },
+  );
+}

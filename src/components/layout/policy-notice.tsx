@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { policyNotice } from "@/content/pages";
 import { routes } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
@@ -35,6 +36,7 @@ function alreadyAccepted(): boolean {
  */
 export function PolicyNotice() {
   const [visible, setVisible] = useState(false);
+  const t = useTranslations("policyNotice");
 
   useEffect(() => {
     if (alreadyAccepted()) return;
@@ -83,7 +85,7 @@ export function PolicyNotice() {
             <motion.button
               type="button"
               onClick={() => setVisible(false)}
-              aria-label={policyNotice.dismissLabel}
+              aria-label={t("dismiss")}
               variants={{
                 hidden: { opacity: 0 },
                 visible: { opacity: 1, transition: { duration: 0.3 } },
@@ -110,7 +112,7 @@ export function PolicyNotice() {
               }}
               className="mt-4 pr-8 text-[1.0625rem] font-extrabold text-ink"
             >
-              {policyNotice.title}
+              {t("title")}
             </motion.h2>
 
             <motion.p
@@ -120,7 +122,7 @@ export function PolicyNotice() {
               }}
               className="mt-2 text-[0.8125rem] leading-[1.65] text-muted"
             >
-              {policyNotice.body}
+              {t("body")}
             </motion.p>
 
             <motion.div
@@ -131,10 +133,10 @@ export function PolicyNotice() {
               className="mt-5 flex flex-wrap items-center gap-2.5"
             >
               <Button size="sm" onClick={accept}>
-                {policyNotice.acceptLabel}
+                {t("accept")}
               </Button>
               <Button href={routes.privacy} variant="subtle" size="sm">
-                {policyNotice.readLabel}
+                {t("read")}
               </Button>
             </motion.div>
           </motion.div>

@@ -1,17 +1,21 @@
-﻿import { principles } from "@/content/about";
+﻿import { getTranslations } from "next-intl/server";
 import { routes } from "@/constants/routes";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 
 /** Closing band: what Karam will not do, then the one thing it asks you to do. */
-export function Principles() {
+export async function Principles() {
+  const t = await getTranslations("about");
+  const tc = await getTranslations("common");
+  const principles = t.raw("principles") as { title: string; description: string }[];
+
   return (
     <Container className="pb-16 lg:pb-20">
       <Reveal>
         <div className="card-pattern-invert rounded-[var(--radius-block)] bg-contrast px-6 py-12 text-paper sm:px-10 sm:py-14 lg:px-14">
           <h2 className="max-w-2xl text-[1.625rem] leading-[1.15] font-extrabold sm:text-[2rem] lg:text-[2.25rem]">
-            Three Rules We Do Not Bend.
+            {t("principlesTitle")}
           </h2>
 
           <ul className="mt-10 grid gap-8 sm:grid-cols-3 sm:gap-6">
@@ -31,10 +35,10 @@ export function Principles() {
           <Reveal delay={380}>
             <div className="mt-12 flex flex-col gap-3 sm:flex-row">
               <Button href={routes.raiseConcern} size="lg">
-                Raise A Concern
+                {tc("raiseConcern")}
               </Button>
               <Button href={routes.cases} variant="onDark" size="lg">
-                See Live Cases
+                {t("seeLiveCases")}
               </Button>
             </div>
           </Reveal>

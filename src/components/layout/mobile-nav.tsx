@@ -1,11 +1,13 @@
 ﻿"use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { mainNav } from "@/config/navigation";
 import { routes } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
 import { SmoothLink } from "@/components/ui/smooth-link";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { Icon } from "@/components/ui/icons";
 import { cn } from "@/lib/utils/cn";
 
@@ -13,8 +15,9 @@ import { cn } from "@/lib/utils/cn";
  * Only the toggle is client-side; the header itself stays a Server Component.
  * The panel closes on link click and on Escape.
  */
-export function MobileNav() {
+export function MobileNav({ account }: { account: { name: string } | null }) {
   const [open, setOpen] = useState(false);
+  const t = useTranslations();
 
   useEffect(() => {
     if (!open) return;
@@ -50,23 +53,38 @@ export function MobileNav() {
           open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         )}
       >
-        <nav aria-label="Mobile">
+        <nav aria-label={t("nav.ariaMobile")}>
           <ul className="flex flex-col">
             {mainNav.map((item) => (
-              <li key={item.label} className="border-b border-hairline">
+              <li key={item.key} className="border-b border-hairline">
                 <SmoothLink
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className="block py-4 text-base font-medium text-ink transition-opacity hover:opacity-55"
                 >
-                  {item.label}
+                  {t(`nav.${item.key}`)}
                 </SmoothLink>
               </li>
             ))}
 
-            {/* The header theme switch lives here on small screens */}
+            {/* Account link — the header's on small screens */}
+            <li className="border-b border-hairline">
+              <SmoothLink
+                href={account ? routes.account : routes.login}
+                onClick={() => setOpen(false)}
+                className="block py-4 text-base font-medium text-ink transition-opacity hover:opacity-55"
+              >
+                {account ? t("nav.yourAccount", { name: account.name }) : t("common.logIn")}
+              </SmoothLink>
+            </li>
+
+            {/* Language + theme switches live here on small screens */}
             <li className="flex items-center justify-between border-b border-hairline py-2.5">
-              <span className="text-base font-medium text-ink">Theme</span>
+              <span className="text-base font-medium text-ink">{t("common.language")}</span>
+              <LanguageSwitcher />
+            </li>
+            <li className="flex items-center justify-between border-b border-hairline py-2.5">
+              <span className="text-base font-medium text-ink">{t("nav.theme")}</span>
               <ThemeToggle />
             </li>
           </ul>
@@ -80,7 +98,7 @@ export function MobileNav() {
             className="w-full"
             onClick={() => setOpen(false)}
           >
-            Raise A Concern
+            {t("common.raiseConcern")}
           </Button>
           <Button
             href={routes.volunteer}
@@ -89,7 +107,7 @@ export function MobileNav() {
             className="w-full"
             onClick={() => setOpen(false)}
           >
-            Volunteer Near You
+            {t("common.volunteerNearYou")}
           </Button>
         </div>
       </div>

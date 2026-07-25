@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { joinInvite } from "@/content/pages";
 import { routes } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
@@ -40,6 +41,8 @@ export function JoinInvite() {
   const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const returnFocusTo = useRef<HTMLElement | null>(null);
+  const t = useTranslations("joinInvite");
+  const stats = t.raw("stats") as { value: string; label: string }[];
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -154,22 +157,20 @@ export function JoinInvite() {
 
             <div className="px-6 pt-7 pb-8 sm:p-8">
               <span className="text-[0.6875rem] font-bold tracking-[0.14em] text-muted uppercase">
-                {joinInvite.eyebrow}
+                {t("eyebrow")}
               </span>
 
               <h2
                 id="join-invite-title"
                 className="mt-3 text-[1.375rem] leading-[1.15] font-extrabold text-ink sm:text-[1.625rem]"
               >
-                {joinInvite.title}
+                {t("title")}
               </h2>
 
-              <p className="mt-3 text-[0.875rem] leading-[1.7] text-muted">
-                {joinInvite.body}
-              </p>
+              <p className="mt-3 text-[0.875rem] leading-[1.7] text-muted">{t("body")}</p>
 
               <dl className="mt-6 grid grid-cols-3 gap-3 border-y border-hairline py-4">
-                {joinInvite.stats.map((stat) => (
+                {stats.map((stat) => (
                   <div key={stat.label}>
                     <dt className="sr-only">{stat.label}</dt>
                     <dd>
@@ -193,7 +194,7 @@ export function JoinInvite() {
                   onClick={close}
                   className="w-full sm:flex-1"
                 >
-                  {joinInvite.primaryLabel}
+                  {t("primary")}
                 </Button>
                 <Button
                   href={routes.volunteer}
@@ -202,12 +203,12 @@ export function JoinInvite() {
                   onClick={close}
                   className="w-full sm:flex-1"
                 >
-                  {joinInvite.secondaryLabel}
+                  {t("secondary")}
                 </Button>
               </div>
 
               <p className="mt-5 text-center text-[0.6875rem] leading-relaxed text-muted">
-                {joinInvite.footnote}
+                {t("footnote")}
               </p>
             </div>
           </motion.div>

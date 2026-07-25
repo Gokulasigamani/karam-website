@@ -1,11 +1,16 @@
 "use server";
 
+import { getTranslations } from "next-intl/server";
 import type { FormState } from "@/types/form";
-import { list, text, toFieldErrors } from "@/lib/utils/form";
+import { text, toFieldErrors } from "@/lib/utils/form";
+import { getCurrentUser } from "@/features/auth/server/session";
+import { checkRateLimit } from "@/lib/security/rate-limit";
+import { createCaseFromConcern } from "@/features/cases/server/cases.repo";
 import { concernSchema } from "../schemas/concern.schema";
+import { insertConcern, newReference } from "./concern.repo";
 
 /**
- * Validates a raised concern and hands it to the backend.
+ * Validates a raised concern and stores it.
  *
  * Runs on the server, so the rules here hold even if the browser form is
  * bypassed. Resolves with a `FormState` instead of throwing, which lets the
@@ -15,6 +20,16 @@ export async function submitConcern(
   _previous: FormState,
   formData: FormData,
 ): Promise<FormState> {
+  const t = await getTranslations("forms");
+  const user = await getCurrentUser();
+  if (!user) {
+    return { status: "error", message: t("concern.loginRequired") };
+  }
+
+  if (!(await checkRateLimit(`concern:${user.id}`, { limit: 10, windowMs: 60 * 60 * 1000 }))) {
+    return { status: "error", message: t("concern.rateLimited") };
+  }
+
   const parsed = concernSchema.safeParse({
     fullName: text(formData, "fullName"),
     phone: text(formData, "phone"),
@@ -32,19 +47,29 @@ export async function submitConcern(
   if (!parsed.success) {
     return {
       status: "error",
-      message: "Please check the highlighted fields and try again.",
+      message: t("checkFields"),
       fieldErrors: toFieldErrors(parsed.error),
     };
   }
 
-  // Not yet wired to a backend. When the API exists, this becomes:
-  //   await createConcern(parsed.data)   // features/concern/api/concern.api.ts
-  // and the catch below turns an ApiError into a user-facing message.
-  void list(formData, "attachments");
+  // Attachments are collected by the form but not yet stored — file upload to
+  // object storage is a separate piece of work.
+  try {
+    const reference = newReference();
+    const caseId = await createCaseFromConcern({
+      reference,
+      category: parsed.data.category,
+      title: parsed.data.title,
+      description: parsed.data.description,
+      district: parsed.data.district,
+      locality: parsed.data.locality,
+      raisedByUserId: user.id,
+    });
+    await insertConcern(parsed.data, { reference, raisedByUserId: user.id, caseId });
 
-  return {
-    status: "success",
-    message:
-      "Your concern has been received. Volunteers in your ward will be notified, and you will get an SMS with the case reference shortly.",
-  };
+    return { status: "success", message: t("concern.success", { reference }) };
+  } catch (error) {
+    console.error("submitConcern: failed to store concern", error);
+    return { status: "error", message: t("concern.storeError") };
+  }
 }

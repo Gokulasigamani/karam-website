@@ -1,16 +1,26 @@
 import Image from "next/image";
-import { statePoints, tamilNaduIntro } from "@/content/about";
+import { getTranslations } from "next-intl/server";
+import { tamilNaduIntro } from "@/content/about";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { TextCycle } from "@/components/ui/text-cycle";
+import type { IconName } from "@/components/ui/icons";
 import { BannerCycle } from "./banner-cycle";
+
+/** Icons stay in code; the point text comes from the message catalog. */
+const STATE_ICONS: IconName[] = ["mapPin", "users", "building", "shieldCheck"];
 
 /**
  * One self-contained banner, laid out as a wide rectangle: the fixed copy sits
  * on the left, the changing step on the right. Two columns keep it short
  * instead of stacking into a tall block.
  */
-export function TamilNadu() {
+export async function TamilNadu() {
+  const t = await getTranslations("about");
+  const points = (t.raw("statePoints") as { title: string; description: string }[]).map(
+    (point, index) => ({ ...point, icon: STATE_ICONS[index] }),
+  );
+
   return (
     <Container className="pb-14 lg:pb-20">
       <Reveal>
@@ -33,24 +43,24 @@ export function TamilNadu() {
             <div>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                 <span className="text-[0.6875rem] font-bold tracking-[0.12em] text-lime-400 uppercase">
-                  {tamilNaduIntro.eyebrow}
+                  {t("tnEyebrow")}
                 </span>
                 <span className="inline-flex items-baseline gap-1.5 rounded-full bg-white/8 px-2.5 py-1 text-[0.6875rem] font-semibold text-white/70">
-                  Live in
+                  {t("liveIn")}
                   <TextCycle items={tamilNaduIntro.districts} className="text-lime-400" />
                 </span>
               </div>
 
               <h2 className="mt-4 text-[1.625rem] leading-[1.12] font-extrabold sm:text-[2rem] lg:text-[2.25rem]">
-                {tamilNaduIntro.title}
+                {t("tnTitle")}
               </h2>
 
               <p className="mt-4 max-w-lg text-[0.875rem] leading-[1.7] text-white/55">
-                {tamilNaduIntro.description}
+                {t("tnDescription")}
               </p>
             </div>
 
-            <BannerCycle points={statePoints} />
+            <BannerCycle points={points} />
           </div>
         </div>
       </Reveal>

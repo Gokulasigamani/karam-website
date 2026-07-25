@@ -26,6 +26,13 @@ export const serverEnv = {
   get apiBaseUrl(): string {
     return required("API_BASE_URL", process.env.API_BASE_URL);
   },
+  get mongoUri(): string {
+    return required("MONGODB_URI", process.env.MONGODB_URI);
+  },
+  /** Database name inside the cluster. Falls back to `karam`. */
+  get mongoDb(): string {
+    return process.env.MONGODB_DB?.trim() || "karam";
+  },
 } as const;
 
 /**

@@ -1,4 +1,5 @@
 ﻿import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { routes } from "@/constants/routes";
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,9 @@ import { SocialLinks } from "@/components/ui/social-links";
  * Full-bleed opening card. The wordmark scales with the viewport via `clamp()`
  * so it stays edge-hugging from 320px to ultrawide without breakpoint overrides.
  */
-export function Hero() {
+export async function Hero() {
+  const t = await getTranslations();
+
   return (
     <Container className="pt-2">
       <div className="relative overflow-hidden rounded-[var(--radius-media)] bg-shade">
@@ -28,14 +31,16 @@ export function Hero() {
           className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-black/25"
         />
 
-        <div className="relative flex min-h-[420px] flex-col justify-between p-5 sm:min-h-[460px] sm:p-7 lg:min-h-[520px] lg:p-8">
+        <div className="relative flex min-h-[420px] flex-col p-5 sm:min-h-[460px] sm:p-7 lg:min-h-[520px] lg:p-8">
           <SocialLinks
             className="justify-center"
             itemClassName="bg-black/25 text-white backdrop-blur-md hover:bg-black/40"
             showLabels
           />
 
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+          {/* `mt-auto` keeps this pinned to the bottom whether or not the social
+              row above it renders (it is hidden until real profile URLs are set) */}
+          <div className="mt-auto flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
             <h1 className="flex flex-wrap items-end gap-x-3 gap-y-1 text-paper">
               <span
                 className="leading-[0.8] font-extrabold tracking-[-0.055em]"
@@ -44,12 +49,12 @@ export function Hero() {
                 {siteConfig.name}
               </span>
               <span className="mb-1.5 max-w-[7ch] text-2xl leading-[1.05] font-bold sm:text-[1.75rem] lg:mb-3 lg:text-[2rem]">
-                Help Others
+                {t("hero.help")}
               </span>
             </h1>
 
             <Button href={routes.raiseConcern} size="lg" className="w-full sm:w-auto">
-              Raise A Concern
+              {t("common.raiseConcern")}
             </Button>
           </div>
         </div>

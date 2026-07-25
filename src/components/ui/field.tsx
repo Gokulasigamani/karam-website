@@ -1,9 +1,12 @@
+"use client";
+
 import type {
   InputHTMLAttributes,
   ReactNode,
   SelectHTMLAttributes,
   TextareaHTMLAttributes,
 } from "react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils/cn";
 
 /**
@@ -34,12 +37,15 @@ export function Field({
   label: string;
   htmlFor: string;
   hint?: string;
-  error?: string[];
+  /** A single message or a list; only the first is shown. */
+  error?: string | string[];
   required?: boolean;
   className?: string;
   children: ReactNode;
 }) {
-  const hasError = Boolean(error?.length);
+  const t = useTranslations("forms");
+  const messages = Array.isArray(error) ? error : error ? [error] : [];
+  const hasError = messages.length > 0;
 
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
@@ -51,7 +57,7 @@ export function Field({
             *
           </span>
         )}
-        {!required && <span className="font-normal text-muted"> (optional)</span>}
+        {!required && <span className="font-normal text-muted"> {t("optionalSuffix")}</span>}
       </label>
 
       {hint && (
@@ -64,7 +70,7 @@ export function Field({
 
       {hasError && (
         <p id={`${htmlFor}-error`} role="alert" className="text-[0.75rem] font-medium text-danger">
-          {error?.[0]}
+          {messages[0]}
         </p>
       )}
     </div>

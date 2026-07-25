@@ -1,22 +1,28 @@
-import { steps, stepsIntro } from "@/content/steps";
+import { getTranslations } from "next-intl/server";
 import { Section, SectionHeading, Card } from "@/components/ui/section";
-import { Icon } from "@/components/ui/icons";
+import { Icon, type IconName } from "@/components/ui/icons";
 
-export function HowItWorks() {
+/** Structure stays in code; the step text comes from the message catalog. */
+const STEP_ICONS: IconName[] = ["megaphone", "users", "building", "shieldCheck"];
+
+export async function HowItWorks() {
+  const t = await getTranslations("howItWorks");
+  const steps = t.raw("steps") as { title: string; description: string }[];
+
   return (
     <Section id="how-it-works">
-      <SectionHeading title={stepsIntro.title} description={stepsIntro.description} />
+      <SectionHeading title={t("title")} description={t("description")} />
 
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {steps.map((step) => (
-          <li key={step.number}>
+        {steps.map((step, index) => (
+          <li key={step.title}>
             <Card className="card-pattern flex h-full flex-col">
               <div className="flex items-center justify-between">
                 <span className="grid size-10 place-items-center rounded-lg bg-lime-200 text-shade">
-                  <Icon name={step.icon} className="size-[1.125rem]" />
+                  <Icon name={STEP_ICONS[index]} className="size-[1.125rem]" />
                 </span>
                 <span className="text-xs font-bold tracking-[0.1em] text-muted/60">
-                  {step.number}
+                  {String(index + 1).padStart(2, "0")}
                 </span>
               </div>
 

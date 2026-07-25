@@ -17,22 +17,21 @@ export const availabilityOptions = [
 
 const phonePattern = /^(?:\+?91[\s-]?)?[6-9]\d{9}$/;
 
+/** Validation messages are translation keys — see `concern.schema` for why. */
 export const volunteerSchema = z.object({
-  fullName: z.string().min(2, "Please enter your name."),
+  fullName: z.string().min(2, "validation.nameRequired"),
   phone: z
     .string()
-    .min(1, "A phone number is required so your ward team can reach you.")
+    .min(1, "validation.phoneRequiredVolunteer")
     .refine((value) => phonePattern.test(value.replace(/\s|-/g, "")), {
-      message: "Enter a valid 10-digit mobile number.",
+      message: "validation.phoneInvalid",
     }),
-  email: z.union([z.email("Enter a valid email address."), z.literal("")]),
-  district: z.string().min(2, "Choose a district."),
-  locality: z.string().min(2, "Add the ward, village or street you can cover."),
-  availability: z.enum(availabilityOptions, { message: "Choose your availability." }),
-  interests: z
-    .array(z.enum(volunteerInterests))
-    .min(1, "Choose at least one way you can help."),
-  consent: z.literal("on", { message: "Please agree to the volunteer conduct terms." }),
+  email: z.union([z.email("validation.emailInvalid"), z.literal("")]),
+  district: z.string().min(2, "validation.districtRequired"),
+  locality: z.string().min(2, "validation.localityRequiredCover"),
+  availability: z.enum(availabilityOptions, { message: "validation.availabilityRequired" }),
+  interests: z.array(z.enum(volunteerInterests)).min(1, "validation.interestsRequired"),
+  consent: z.literal("on", { message: "validation.consentVolunteer" }),
 });
 
 export type VolunteerInput = z.infer<typeof volunteerSchema>;

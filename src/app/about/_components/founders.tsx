@@ -1,12 +1,16 @@
 import Image from "next/image";
-import { founders, foundersIntro } from "@/content/about";
+import { getTranslations } from "next-intl/server";
+import { founders } from "@/content/about";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 
-export function Founders() {
+export async function Founders() {
+  const t = await getTranslations("about");
+  const roles = t.raw("founders") as { role: string; focus: string }[];
+
   return (
     <Section id="founders" className="pt-0 sm:pt-0 lg:pt-0">
-      <SectionHeading title={foundersIntro.title} description={foundersIntro.description} />
+      <SectionHeading title={t("foundersTitle")} description={t("foundersDescription")} />
 
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:mt-10 lg:grid-cols-3 lg:gap-5">
         {founders.map((founder, index) => (
@@ -25,10 +29,10 @@ export function Founders() {
               <div className="flex flex-1 flex-col px-2 pt-5 pb-2 sm:px-2.5">
                 <h3 className="text-[1.1875rem] font-extrabold text-ink">{founder.name}</h3>
                 <p className="mt-1 text-xs font-bold tracking-[0.06em] text-muted uppercase">
-                  {founder.role}
+                  {roles[index]?.role}
                 </p>
                 <p className="mt-3 text-[0.8125rem] leading-[1.65] text-muted">
-                  {founder.focus}
+                  {roles[index]?.focus}
                 </p>
               </div>
             </article>

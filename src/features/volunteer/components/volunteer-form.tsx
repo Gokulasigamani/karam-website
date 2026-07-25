@@ -1,17 +1,40 @@
 "use client";
 
 import { useActionState } from "react";
+import { useTranslations } from "next-intl";
 import { districts } from "@/constants/routes";
 import { initialFormState } from "@/types/form";
-import { Button } from "@/components/ui/button";
+import { useFormValidation } from "@/hooks/use-form-validation";
 import { Choice, Field, Input, Select } from "@/components/ui/field";
 import { FormMessage } from "@/components/ui/form-message";
+import { FormSubmit } from "@/components/ui/form-submit";
 import { Icon } from "@/components/ui/icons";
 import { submitVolunteer } from "../server/volunteer.actions";
-import { availabilityOptions, volunteerInterests } from "../schemas/volunteer.schema";
+import {
+  availabilityOptions,
+  volunteerInterests,
+  volunteerSchema,
+} from "../schemas/volunteer.schema";
+
+const initialValues = {
+  fullName: "",
+  phone: "",
+  email: "",
+  district: "",
+  locality: "",
+  availability: availabilityOptions[0],
+  interests: [] as string[],
+  consent: "",
+};
 
 export function VolunteerForm() {
   const [state, formAction, pending] = useActionState(submitVolunteer, initialFormState);
+  const form = useFormValidation(volunteerSchema, initialValues, state.fieldErrors);
+  const t = useTranslations();
+  const err = (field: string) => {
+    const key = form.error(field);
+    return key ? t(key) : undefined;
+  };
 
   if (state.status === "success") {
     return (
@@ -19,7 +42,9 @@ export function VolunteerForm() {
         <span className="mx-auto grid size-12 place-items-center rounded-2xl bg-lime-400 text-shade">
           <Icon name="check" className="size-6" strokeWidth={2.5} />
         </span>
-        <h2 className="mt-6 text-[1.375rem] font-extrabold text-ink">Welcome to Karam.</h2>
+        <h2 className="mt-6 text-[1.375rem] font-extrabold text-ink">
+          {t("forms.volunteer.successTitle")}
+        </h2>
         <p className="mx-auto mt-3 max-w-md text-[0.875rem] leading-[1.7] text-muted">
           {state.message}
         </p>
@@ -27,57 +52,54 @@ export function VolunteerForm() {
     );
   }
 
-  const errors = state.fieldErrors ?? {};
-
   return (
-    <form action={formAction}>
+    <form action={formAction} noValidate>
       <FormMessage state={state} className="mb-6" />
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Your name" htmlFor="fullName" required error={errors.fullName}>
+        <Field label={t("forms.yourName")} htmlFor="fullName" required error={err("fullName")}>
           <Input
             id="fullName"
             name="fullName"
             autoComplete="name"
-            invalid={Boolean(errors.fullName)}
-            aria-describedby={errors.fullName ? "fullName-error" : undefined}
+            invalid={Boolean(form.error("fullName"))}
+            {...form.field("fullName")}
           />
         </Field>
 
-        <Field label="Mobile number" htmlFor="phone" required error={errors.phone}>
+        <Field label={t("forms.mobile")} htmlFor="phone" required error={err("phone")}>
           <Input
             id="phone"
             name="phone"
             type="tel"
             inputMode="tel"
             autoComplete="tel"
-            placeholder="10-digit mobile"
-            invalid={Boolean(errors.phone)}
-            aria-describedby={errors.phone ? "phone-error" : undefined}
+            placeholder={t("forms.mobilePlaceholder")}
+            invalid={Boolean(form.error("phone"))}
+            {...form.field("phone")}
           />
         </Field>
 
-        <Field label="Email" htmlFor="email" error={errors.email}>
+        <Field label={t("forms.email")} htmlFor="email" error={err("email")}>
           <Input
             id="email"
             name="email"
             type="email"
             autoComplete="email"
-            invalid={Boolean(errors.email)}
-            aria-describedby={errors.email ? "email-error" : undefined}
+            invalid={Boolean(form.error("email"))}
+            {...form.field("email")}
           />
         </Field>
 
-        <Field label="District" htmlFor="district" required error={errors.district}>
+        <Field label={t("forms.district")} htmlFor="district" required error={err("district")}>
           <Select
             id="district"
             name="district"
-            defaultValue=""
-            invalid={Boolean(errors.district)}
-            aria-describedby={errors.district ? "district-error" : undefined}
+            invalid={Boolean(form.error("district"))}
+            {...form.field("district")}
           >
             <option value="" disabled>
-              Choose a district
+              {t("forms.chooseDistrict")}
             </option>
             {districts.map((district) => (
               <option key={district} value={district}>
@@ -88,53 +110,49 @@ export function VolunteerForm() {
         </Field>
 
         <Field
-          label="Ward, village or street you can cover"
+          label={t("forms.volunteer.localityLabel")}
           htmlFor="locality"
           required
-          error={errors.locality}
+          error={err("locality")}
           className="sm:col-span-2"
-          hint="Volunteers are matched to cases raised near them, so keep this close to where you actually are."
+          hint={t("forms.volunteer.localityHint")}
         >
           <Input
             id="locality"
             name="locality"
-            placeholder="e.g. Ward 14, Kosapet"
-            invalid={Boolean(errors.locality)}
-            aria-describedby={errors.locality ? "locality-error" : "locality-hint"}
+            placeholder={t("forms.volunteer.localityPlaceholder")}
+            invalid={Boolean(form.error("locality"))}
+            aria-describedby={form.error("locality") ? "locality-error" : "locality-hint"}
+            {...form.field("locality")}
           />
         </Field>
       </div>
 
       <fieldset className="mt-7">
         <legend className="text-[0.8125rem] font-semibold text-ink">
-          How much time can you give?
+          {t("forms.volunteer.availabilityLegend")}
           <span className="text-danger" aria-hidden="true">
             {" "}
             *
           </span>
         </legend>
         <div className="mt-2.5 grid gap-2.5 sm:grid-cols-3">
-          {availabilityOptions.map((option, index) => (
+          {availabilityOptions.map((option) => (
             <Choice
               key={option}
               type="radio"
               name="availability"
               value={option}
-              label={option}
-              defaultChecked={index === 0}
+              label={t(`availability.${option}`)}
+              {...form.radio("availability", option)}
             />
           ))}
         </div>
-        {errors.availability && (
-          <p role="alert" className="mt-2 text-[0.75rem] font-medium text-danger">
-            {errors.availability[0]}
-          </p>
-        )}
       </fieldset>
 
       <fieldset className="mt-7">
         <legend className="text-[0.8125rem] font-semibold text-ink">
-          Where can you help?
+          {t("forms.volunteer.interestsLegend")}
           <span className="text-danger" aria-hidden="true">
             {" "}
             *
@@ -147,13 +165,14 @@ export function VolunteerForm() {
               type="checkbox"
               name="interests"
               value={interest}
-              label={interest}
+              label={t(`interests.${interest}`)}
+              {...form.check("interests", interest)}
             />
           ))}
         </div>
-        {errors.interests && (
+        {err("interests") && (
           <p role="alert" className="mt-2 text-[0.75rem] font-medium text-danger">
-            {errors.interests[0]}
+            {err("interests")}
           </p>
         )}
       </fieldset>
@@ -162,19 +181,24 @@ export function VolunteerForm() {
         <Choice
           type="checkbox"
           name="consent"
-          label="I agree to the volunteer conduct terms"
-          description="Verify honestly, never ask anyone for money, and keep case details private."
+          value="on"
+          label={t("forms.volunteer.consentLabel")}
+          description={t("forms.volunteer.consentDescription")}
+          {...form.consent("consent")}
         />
-        {errors.consent && (
+        {err("consent") && (
           <p role="alert" className="mt-2 text-[0.75rem] font-medium text-danger">
-            {errors.consent[0]}
+            {err("consent")}
           </p>
         )}
       </div>
 
-      <Button size="lg" disabled={pending} className="mt-8 w-full sm:w-auto">
-        {pending ? "Signing you up…" : "Join As A Volunteer"}
-      </Button>
+      <FormSubmit
+        label={t("forms.volunteer.submit")}
+        pendingLabel={t("forms.volunteer.submitting")}
+        pending={pending}
+        incomplete={!form.isValid}
+      />
     </form>
   );
 }
