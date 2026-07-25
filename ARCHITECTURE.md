@@ -10,7 +10,7 @@ Dependencies point in a single direction. Nothing ever points back up.
 app/          routing + composition   — thin, no business logic
   ↓
 features/     behaviour (forms, blog, search)
-  ↓
+  ↓aaa
 components/   presentation (ui, layout, sections)
   ↓
 lib/          infrastructure (http, config, utils)
