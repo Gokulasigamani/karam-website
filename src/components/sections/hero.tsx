@@ -40,15 +40,18 @@ export async function Hero() {
 
           {/* `mt-auto` keeps this pinned to the bottom whether or not the social
               row above it renders (it is hidden until real profile URLs are set) */}
-          <div className="mt-auto flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
-            <h1 className="flex flex-wrap items-end gap-x-3 gap-y-1 text-paper">
+          <div className="mt-auto flex min-w-0 flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+            <h1 className="flex min-w-0 flex-wrap items-end gap-x-3 gap-y-1 text-paper">
               <span
-                className="leading-[0.8] font-extrabold tracking-[-0.055em]"
-                style={{ fontSize: "clamp(3.75rem, 13vw, 9.5rem)" }}
+                className="leading-[0.8] font-extrabold tracking-[-0.055em] [overflow-wrap:anywhere]"
+                style={{ fontSize: "clamp(3.25rem, 12vw, 9.5rem)" }}
               >
                 {siteConfig.name}
               </span>
-              <span className="mb-1.5 max-w-[7ch] text-2xl leading-[1.05] font-bold sm:text-[1.75rem] lg:mb-3 lg:text-[2rem]">
+              {/* No fixed `ch` cap — that was tuned for the two English words and
+                  clips longer scripts. It wraps naturally and breaks if a single
+                  word is too wide for the card. */}
+              <span className="mb-1.5 max-w-full text-xl leading-[1.15] font-bold [overflow-wrap:anywhere] sm:max-w-[16ch] sm:text-[1.75rem] lg:mb-3 lg:text-[2rem]">
                 {t("hero.help")}
               </span>
             </h1>

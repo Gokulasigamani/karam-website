@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Noto_Sans_Tamil } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale } from "next-intl/server";
+import { getLocale, getMessages } from "next-intl/server";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { HashScroll } from "@/components/layout/hash-scroll";
@@ -60,12 +60,42 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Only these namespaces are used by Client Components, so only these are sent to
+ * the browser. The large server-only namespaces (legal, about, page banners,
+ * sections…) stay on the server — keeping the client bundle and the payload that
+ * `router.refresh()` re-fetches on a language switch small and fast.
+ */
+const CLIENT_NAMESPACES = [
+  "nav",
+  "common",
+  "forms",
+  "validation",
+  "categories",
+  "urgency",
+  "visibility",
+  "availability",
+  "interests",
+  "topics",
+  "auth",
+  "policyNotice",
+  "joinInvite",
+  "errorPage",
+] as const;
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
+  const messages = await getMessages();
+  const clientMessages = Object.fromEntries(
+    CLIENT_NAMESPACES.filter((ns) => ns in messages).map((ns) => [
+      ns,
+      (messages as Record<string, unknown>)[ns],
+    ]),
+  );
 
   return (
     // next-themes writes the theme class on <html> before paint, which the
@@ -81,7 +111,7 @@ export default async function RootLayout({
           <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
         </noscript>
 
-        <NextIntlClientProvider>
+        <NextIntlClientProvider locale={locale} messages={clientMessages}>
           <AppProviders>
             <SplashScreen />
             <HashScroll />

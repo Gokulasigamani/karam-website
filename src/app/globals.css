@@ -120,12 +120,21 @@
     scroll-margin-top: 6rem;
   }
 
+  /* Never scroll the whole page sideways. `clip` (not `hidden`) does not create
+     a scroll container, so the sticky header still sticks. This is the safety
+     net for long Tamil words that some component fails to wrap. */
+  html {
+    overflow-x: clip;
+  }
+
   body {
     background: var(--canvas);
     color: var(--ink);
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Long words (common in Tamil) break to the next line instead of overflowing. */
+    overflow-wrap: break-word;
   }
 
   /* Display type: tight tracking is what reads as "premium" at large sizes */
@@ -134,6 +143,7 @@
   h3 {
     letter-spacing: -0.035em;
     text-wrap: balance;
+    overflow-wrap: break-word;
   }
 
   p {

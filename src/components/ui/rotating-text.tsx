@@ -44,9 +44,14 @@ export function RotatingText({
   const active = items[index];
 
   return (
-    <span className={cn("inline-grid leading-[1.35]", className)}>
+    // `min-w-0 max-w-full` lets the box shrink to the line and wrap, so a long
+    // phrase (common in Tamil) never reserves more width than is available.
+    <span className={cn("inline-grid min-w-0 max-w-full leading-[1.35]", className)}>
       {/* Sizer — reserves the space the longest phrase needs */}
-      <span aria-hidden="true" className="invisible col-start-1 row-start-1">
+      <span
+        aria-hidden="true"
+        className="invisible col-start-1 row-start-1 [overflow-wrap:anywhere]"
+      >
         {longest}
       </span>
 
@@ -67,7 +72,7 @@ export function RotatingText({
             {active?.split(" ").map((word, wordIndex) => (
               <span
                 key={`${word}-${wordIndex}`}
-                className="inline-block overflow-hidden leading-[1.35]"
+                className="inline-block max-w-full overflow-hidden leading-[1.35] [overflow-wrap:anywhere]"
               >
                 <motion.span
                   variants={{
