@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { locales, localeNames, LOCALE_COOKIE, type Locale } from "@/i18n/config";
+import { LogoSpinner } from "@/components/ui/logo-spinner";
 import { cn } from "@/lib/utils/cn";
 
 const ONE_YEAR = 60 * 60 * 24 * 365;
@@ -31,27 +32,31 @@ export function LanguageSwitcher({ className }: { className?: string }) {
   }
 
   return (
-    <div
-      className={cn("inline-flex items-center rounded-full bg-surface p-0.5", className)}
-      role="group"
-      aria-label="Language"
-    >
-      {locales.map((locale) => (
-        <button
-          key={locale}
-          type="button"
-          onClick={() => choose(locale)}
-          aria-pressed={locale === active}
-          className={cn(
-            "cursor-pointer rounded-full px-2.5 py-1 text-xs font-semibold transition-colors",
-            locale === active
-              ? "bg-lime-400 text-shade"
-              : "text-muted hover:text-ink",
-          )}
-        >
-          {localeNames[locale]}
-        </button>
-      ))}
-    </div>
+    <>
+      {/* Immediate feedback: the spinning-logo loader covers the page while the
+          route re-renders in the new language, so the switch never feels frozen. */}
+      {pending && <LogoSpinner />}
+
+      <div
+        className={cn("inline-flex items-center rounded-full bg-surface p-0.5", className)}
+        role="group"
+        aria-label="Language"
+      >
+        {locales.map((locale) => (
+          <button
+            key={locale}
+            type="button"
+            onClick={() => choose(locale)}
+            aria-pressed={locale === active}
+            className={cn(
+              "cursor-pointer rounded-full px-2.5 py-1 text-xs font-semibold transition-colors",
+              locale === active ? "bg-lime-400 text-shade" : "text-muted hover:text-ink",
+            )}
+          >
+            {localeNames[locale]}
+          </button>
+        ))}
+      </div>
+    </>
   );
 }
