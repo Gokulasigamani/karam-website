@@ -1,9 +1,13 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
 import { getDb } from "@/lib/db/mongo";
 import type { CaseEvent, CaseRecord } from "@/content/cases";
 
 const COLLECTION = "cases";
+
+/** The tag every public case read is cached under; mutations revalidate it. */
+export const CASES_TAG = "cases";
 
 /** Pending cases are awaiting verification and are never shown publicly. */
 const PUBLIC_FILTER = { status: { $ne: "Pending" as const } };
@@ -16,32 +20,46 @@ async function collection() {
 /* --------------------------------------------------------------- Public reads */
 
 /**
- * Publicly listable cases, most-progressed first. `_id` is projected out so the
- * documents match `CaseRecord` exactly.
+ * The public reads go through Next's data cache (60s, tagged), so browsing and
+ * language switching don't re-query MongoDB on every render — which matters most
+ * on serverless, where each database round-trip can mean a fresh Atlas
+ * connection. Case mutations call `revalidateTag(CASES_TAG)` to refresh it.
  *
- * A read failure degrades to an empty list rather than throwing: a database blip
- * should not fail the build or take the site down. Pages are cached with ISR, so
- * the next revalidation fills them in once the database recovers.
+ * The cached functions may throw; the exported wrappers catch that and degrade
+ * to empty results (a database blip must not take the site down) and, crucially,
+ * a thrown error is not what gets cached — the next request retries.
  */
-export async function getCases(): Promise<CaseRecord[]> {
-  try {
-    return await (await collection())
+const cachedCases = unstable_cache(
+  async (): Promise<CaseRecord[]> =>
+    (await collection())
       .find(PUBLIC_FILTER, { projection: { _id: 0 } })
       .sort({ progress: -1 })
-      .toArray();
+      .toArray(),
+  ["cases-public-list"],
+  { revalidate: 60, tags: [CASES_TAG] },
+);
+
+const cachedPublicCaseById = unstable_cache(
+  async (id: string): Promise<CaseRecord | null> =>
+    (await collection()).findOne({ id, ...PUBLIC_FILTER }, { projection: { _id: 0 } }),
+  ["cases-public-by-id"],
+  { revalidate: 60, tags: [CASES_TAG] },
+);
+
+/** Publicly listable cases, most-progressed first. Cached; empty on read failure. */
+export async function getCases(): Promise<CaseRecord[]> {
+  try {
+    return await cachedCases();
   } catch (error) {
     console.error("getCases: database read failed, returning empty list", error);
     return [];
   }
 }
 
-/** A single publicly listable case, or `null` for an unknown/pending id. */
+/** A single publicly listable case, or `null` for an unknown/pending id. Cached. */
 export async function getPublicCaseById(id: string): Promise<CaseRecord | null> {
   try {
-    return await (await collection()).findOne(
-      { id, ...PUBLIC_FILTER },
-      { projection: { _id: 0 } },
-    );
+    return await cachedPublicCaseById(id);
   } catch (error) {
     console.error(`getPublicCaseById(${id}): database read failed`, error);
     return null;

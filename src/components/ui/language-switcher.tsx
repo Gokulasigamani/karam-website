@@ -3,13 +3,16 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
-import { locales, localeNames, type Locale } from "@/i18n/config";
-import { setUserLocale } from "@/i18n/locale";
+import { locales, localeNames, LOCALE_COOKIE, type Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/cn";
 
+const ONE_YEAR = 60 * 60 * 24 * 365;
+
 /**
- * EN / தமிழ் toggle. Writes the choice to a cookie and refreshes the route so
- * every server component re-renders in the chosen language.
+ * EN / தமிழ் toggle. Writes the choice straight to the cookie on the client and
+ * refreshes — one server round-trip instead of two (a server action to set the
+ * cookie, then a refresh). The cookie is not sensitive, so it does not need to
+ * be set server-side.
  */
 export function LanguageSwitcher({ className }: { className?: string }) {
   const active = useLocale() as Locale;
@@ -18,8 +21,11 @@ export function LanguageSwitcher({ className }: { className?: string }) {
 
   function choose(locale: Locale) {
     if (locale === active || pending) return;
-    startTransition(async () => {
-      await setUserLocale(locale);
+    // Writing document.cookie is a DOM side effect in an event handler, not
+    // state mutation — the immutability rule doesn't apply here.
+    // eslint-disable-next-line react-hooks/immutability
+    document.cookie = `${LOCALE_COOKIE}=${locale};path=/;max-age=${ONE_YEAR};samesite=lax`;
+    startTransition(() => {
       router.refresh();
     });
   }

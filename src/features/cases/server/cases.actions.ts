@@ -1,17 +1,27 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireRole } from "@/features/auth/server/session";
 import { routes } from "@/constants/routes";
 import { text } from "@/lib/utils/form";
 import {
   addVerification,
   appendTimelineEvent,
+  CASES_TAG,
   getCaseByIdAny,
   promoteToVerified,
   resolveCase,
   routeCase,
 } from "./cases.repo";
+
+/** Refresh every cached public case read after a change. `"max"` gives
+ *  stale-while-revalidate — the public list refreshes on its next visit. */
+function invalidateCases(caseId: string) {
+  revalidateTag(CASES_TAG, "max");
+  revalidatePath(routes.admin);
+  revalidatePath(routes.verifyQueue);
+  revalidatePath(`${routes.cases}/${caseId}`);
+}
 
 const VERIFICATIONS_REQUIRED = 2;
 
@@ -50,8 +60,7 @@ export async function verifyCase(formData: FormData): Promise<void> {
     }
   }
 
-  revalidatePath(routes.verifyQueue);
-  revalidatePath(`${routes.cases}/${caseId}`);
+  invalidateCases(caseId);
 }
 
 /** Admin routes a verified case to the department that can resolve it. */
@@ -68,8 +77,7 @@ export async function routeCaseAction(formData: FormData): Promise<void> {
     done: true,
   });
 
-  revalidatePath(routes.admin);
-  revalidatePath(`${routes.cases}/${caseId}`);
+  invalidateCases(caseId);
 }
 
 /** Admin posts an update to a case's resolution trail. */
@@ -86,8 +94,7 @@ export async function addUpdateAction(formData: FormData): Promise<void> {
     done: true,
   });
 
-  revalidatePath(routes.admin);
-  revalidatePath(`${routes.cases}/${caseId}`);
+  invalidateCases(caseId);
 }
 
 /** Admin marks a case resolved. */
@@ -102,6 +109,5 @@ export async function resolveCaseAction(formData: FormData): Promise<void> {
     done: true,
   });
 
-  revalidatePath(routes.admin);
-  revalidatePath(`${routes.cases}/${caseId}`);
+  invalidateCases(caseId);
 }

@@ -2,7 +2,7 @@
 import { getTranslations } from "next-intl/server";
 import { mainNav } from "@/config/navigation";
 import { routes } from "@/constants/routes";
-import { getCurrentUser } from "@/features/auth";
+import { hasSession } from "@/features/auth";
 import { Brand } from "@/components/ui/brand";
 import { SmoothLink } from "@/components/ui/smooth-link";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -12,8 +12,8 @@ import { Container } from "@/components/ui/container";
 import { MobileNav } from "./mobile-nav";
 
 export async function Header() {
-  const user = await getCurrentUser();
-  const account = user ? { name: user.name.split(" ")[0] } : null;
+  // Cookie-only check — no database query in the global layout.
+  const loggedIn = await hasSession();
   const t = await getTranslations();
 
   return (
@@ -48,25 +48,16 @@ export async function Header() {
               to a mark and one control */}
           <div className="hidden items-center gap-2.5 lg:flex">
             <LanguageSwitcher />
-            {account ? (
-              <Link
-                href={routes.account}
-                className="rounded-full px-2.5 py-2 text-sm font-medium whitespace-nowrap text-ink transition-opacity hover:opacity-55"
-              >
-                {account.name}
-              </Link>
-            ) : (
-              <Link
-                href={routes.login}
-                className="rounded-full px-2.5 py-2 text-sm font-medium whitespace-nowrap text-ink transition-opacity hover:opacity-55"
-              >
-                {t("common.logIn")}
-              </Link>
-            )}
+            <Link
+              href={loggedIn ? routes.account : routes.login}
+              className="rounded-full px-2.5 py-2 text-sm font-medium whitespace-nowrap text-ink transition-opacity hover:opacity-55"
+            >
+              {loggedIn ? t("common.account") : t("common.logIn")}
+            </Link>
             <ThemeToggle />
             <Button href={routes.raiseConcern}>{t("common.raiseConcernShort")}</Button>
           </div>
-          <MobileNav account={account} />
+          <MobileNav loggedIn={loggedIn} />
         </div>
       </Container>
     </header>

@@ -30,6 +30,17 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
   return findUserById(userId);
 });
 
+/**
+ * Cheap "is someone signed in?" check that reads only the cookie — no database.
+ * The global header uses this so browsing every page does not incur a session
+ * lookup (which, on serverless, can mean a fresh Atlas connection). A present
+ * but stale cookie just shows an "Account" link; the guarded page it leads to
+ * resolves the real session and redirects if it is invalid.
+ */
+export async function hasSession(): Promise<boolean> {
+  return Boolean((await cookies()).get(SESSION_COOKIE)?.value);
+}
+
 /** Redirects to login when signed out; otherwise returns the user. */
 export async function requireUser(nextPath?: string): Promise<SessionUser> {
   const user = await getCurrentUser();

@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils/cn";
  * Only the toggle is client-side; the header itself stays a Server Component.
  * The panel closes on link click and on Escape.
  */
-export function MobileNav({ account }: { account: { name: string } | null }) {
+export function MobileNav({ loggedIn }: { loggedIn: boolean }) {
   const [open, setOpen] = useState(false);
   const t = useTranslations();
 
@@ -70,11 +70,11 @@ export function MobileNav({ account }: { account: { name: string } | null }) {
             {/* Account link — the header's on small screens */}
             <li className="border-b border-hairline">
               <SmoothLink
-                href={account ? routes.account : routes.login}
+                href={loggedIn ? routes.account : routes.login}
                 onClick={() => setOpen(false)}
                 className="block py-4 text-base font-medium text-ink transition-opacity hover:opacity-55"
               >
-                {account ? t("nav.yourAccount", { name: account.name }) : t("common.logIn")}
+                {loggedIn ? t("common.account") : t("common.logIn")}
               </SmoothLink>
             </li>
 
