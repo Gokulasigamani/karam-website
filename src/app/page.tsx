@@ -1,3 +1,4 @@
+import { getCases } from "@/features/cases/server/cases.repo";
 import { Hero } from "@/components/sections/hero";
 import { HowItWorks } from "@/components/sections/how-it-works";
 import { Causes } from "@/components/sections/causes";
@@ -7,20 +8,21 @@ import { Community } from "@/components/sections/community";
 import { Faq } from "@/components/sections/faq";
 
 /**
- * The page reads as an outline. Every block is a Server Component; only the
- * accordion and the mobile menu ship JavaScript.
+ * The page reads as an outline. It fetches the case data on the server and hands
+ * it to the (client) section components, which render text via the client locale
+ * so a language switch is instant.
  */
-// The Cases teaser reads live data, so the home page is cached with ISR rather
-// than prerendered once at build.
 export const revalidate = 60;
 
-export default function HomePage() {
+export default async function HomePage() {
+  const cases = await getCases();
+
   return (
     <>
       <Hero />
       <HowItWorks />
       <Causes />
-      <Cases />
+      <Cases cases={cases} />
       <Officials />
       <Community />
       <Faq />

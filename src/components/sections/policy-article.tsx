@@ -1,5 +1,7 @@
+"use client";
+
 import type { ReactNode } from "react";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import type { PrivacySection } from "@/content/pages";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
@@ -10,7 +12,7 @@ import { Reveal } from "@/components/ui/reveal";
  * they share one implementation — a heading that changes in three places is a
  * heading that ends up different in three places.
  */
-export async function PolicyArticle({
+export function PolicyArticle({
   sections,
   footer,
 }: {
@@ -18,7 +20,7 @@ export async function PolicyArticle({
   /** Closing card. Every policy page ends with a way to ask about it. */
   footer?: ReactNode;
 }) {
-  const t = await getTranslations("legal");
+  const t = useTranslations("legal");
 
   return (
     <Container className="pb-16 lg:pb-24">

@@ -1,4 +1,6 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon } from "@/components/ui/icons";
@@ -17,8 +19,8 @@ interface Department {
  * on the left, the routing table on a soft surface at the right. Rows stagger in
  * on scroll and lift their pill on hover.
  */
-export async function Officials() {
-  const t = await getTranslations("officials");
+export function Officials() {
+  const t = useTranslations("officials");
   const points = t.raw("points") as string[];
   const departments = t.raw("departments") as Department[];
 

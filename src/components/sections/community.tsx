@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import { statPhotos, type StatPhoto } from "@/content/stats";
 import { routes } from "@/constants/routes";
 import { Section } from "@/components/ui/section";
@@ -17,8 +19,8 @@ const rightPhotos = statPhotos.slice(2);
  *
  * Every photo is portrait and narrow, which keeps the section short.
  */
-export async function Community() {
-  const t = await getTranslations();
+export function Community() {
+  const t = useTranslations();
 
   return (
     <Section id="join" className="py-12 sm:py-14 lg:py-16">

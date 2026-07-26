@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getTranslations } from "next-intl/server";
-import { AuthShell, LoginForm, getCurrentUser } from "@/features/auth";
+import { AuthPanel, getCurrentUser } from "@/features/auth";
 import { routes } from "@/constants/routes";
 
 export const metadata: Metadata = {
@@ -25,23 +23,5 @@ export default async function LoginPage({
 
   if (await getCurrentUser()) redirect(safe ?? routes.account);
 
-  const t = await getTranslations("auth");
-  const signupHref = safe ? `${routes.signup}?next=${encodeURIComponent(safe)}` : routes.signup;
-
-  return (
-    <AuthShell
-      title={t("loginTitle")}
-      subtitle={t("loginSubtitle")}
-      footer={
-        <>
-          {t("newToKaram")}{" "}
-          <Link href={signupHref} className="font-semibold text-ink hover:opacity-60">
-            {t("createOne")}
-          </Link>
-        </>
-      }
-    >
-      <LoginForm next={safe} />
-    </AuthShell>
-  );
+  return <AuthPanel mode="login" next={safe} />;
 }

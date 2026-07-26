@@ -1,13 +1,15 @@
-﻿import { getTranslations } from "next-intl/server";
+﻿"use client";
+
+import { useTranslations } from "next-intl";
 import { routes } from "@/constants/routes";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 
 /** Closing band: what Karam will not do, then the one thing it asks you to do. */
-export async function Principles() {
-  const t = await getTranslations("about");
-  const tc = await getTranslations("common");
+export function Principles() {
+  const t = useTranslations("about");
+  const tc = useTranslations("common");
   const principles = t.raw("principles") as { title: string; description: string }[];
 
   return (

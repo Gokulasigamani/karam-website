@@ -1,10 +1,12 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/container";
 import { HelpingHands } from "@/components/ui/helping-hands";
 import { Reveal } from "@/components/ui/reveal";
 
-export async function AboutHero() {
-  const t = await getTranslations("about");
+export function AboutHero() {
+  const t = useTranslations("about");
 
   return (
     <Container className="pt-8 pb-14 lg:pt-14 lg:pb-20">

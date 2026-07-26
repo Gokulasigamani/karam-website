@@ -1,8 +1,9 @@
-﻿import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+﻿"use client";
+
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { mainNav } from "@/config/navigation";
 import { routes } from "@/constants/routes";
-import { hasSession } from "@/features/auth";
 import { Brand } from "@/components/ui/brand";
 import { SmoothLink } from "@/components/ui/smooth-link";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -11,10 +12,11 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { MobileNav } from "./mobile-nav";
 
-export async function Header() {
-  // Cookie-only check — no database query in the global layout.
-  const loggedIn = await hasSession();
-  const t = await getTranslations();
+/** `loggedIn` is resolved once in the server layout (cookie only, no DB) and
+ *  passed in, so the header stays a fast client component that switches language
+ *  instantly. */
+export function Header({ loggedIn }: { loggedIn: boolean }) {
+  const t = useTranslations();
 
   return (
     <header className="sticky top-0 z-50 bg-canvas/90 backdrop-blur-xl">

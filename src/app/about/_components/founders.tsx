@@ -1,11 +1,13 @@
+"use client";
+
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import { founders } from "@/content/about";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 
-export async function Founders() {
-  const t = await getTranslations("about");
+export function Founders() {
+  const t = useTranslations("about");
   const roles = t.raw("founders") as { role: string; focus: string }[];
 
   return (

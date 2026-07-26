@@ -1,12 +1,14 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Section, SectionHeading, Card } from "@/components/ui/section";
 import { Icon, type IconName } from "@/components/ui/icons";
 
 /** Structure stays in code; the step text comes from the message catalog. */
 const STEP_ICONS: IconName[] = ["megaphone", "users", "building", "shieldCheck"];
 
-export async function HowItWorks() {
-  const t = await getTranslations("howItWorks");
+export function HowItWorks() {
+  const t = useTranslations("howItWorks");
   const steps = t.raw("steps") as { title: string; description: string }[];
 
   return (

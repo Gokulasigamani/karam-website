@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import { type CaseRecord } from "@/content/cases";
 import { caseRoute } from "@/constants/routes";
 import { ProgressBar } from "@/components/ui/progress-bar";
@@ -14,8 +16,8 @@ import { Icon } from "@/components/ui/icons";
  * The whole card is one link. A card with a "read more" link inside it gives a
  * keyboard user a small target and a screen reader a second, redundant stop.
  */
-export async function CaseCard({ record }: { record: CaseRecord }) {
-  const t = await getTranslations();
+export function CaseCard({ record }: { record: CaseRecord }) {
+  const t = useTranslations();
 
   return (
     <article className="card-pattern h-full rounded-[1.375rem] bg-surface transition-colors duration-300 hover:bg-surface-strong focus-within:bg-surface-strong">

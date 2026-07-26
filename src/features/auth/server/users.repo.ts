@@ -2,8 +2,9 @@ import "server-only";
 
 import { ObjectId, type WithId } from "mongodb";
 import { getDb } from "@/lib/db/mongo";
+import type { Role, SessionUser } from "../types";
 
-export type Role = "member" | "volunteer" | "admin";
+export type { Role, SessionUser };
 
 /** Stored user. `email` is always lowercased; `passwordHash` never leaves the server. */
 export interface UserDocument {
@@ -15,16 +16,6 @@ export interface UserDocument {
   locality?: string;
   phone?: string;
   createdAt: Date;
-}
-
-/** The safe view handed to the rest of the app — no hash, id as a string. */
-export interface SessionUser {
-  id: string;
-  name: string;
-  email: string;
-  role: Role;
-  district?: string;
-  locality?: string;
 }
 
 const COLLECTION = "users";

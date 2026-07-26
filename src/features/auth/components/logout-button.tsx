@@ -1,10 +1,12 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { logout } from "../server/auth.actions";
 
 /** A one-button form; `logout` clears the session and redirects home. */
-export async function LogoutButton() {
-  const t = await getTranslations("common");
+export function LogoutButton() {
+  const t = useTranslations("common");
   return (
     <form action={logout}>
       <Button variant="subtle" size="sm">

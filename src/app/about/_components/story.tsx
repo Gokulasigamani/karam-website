@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import { story } from "@/content/about";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
@@ -8,8 +10,8 @@ import { Reveal } from "@/components/ui/reveal";
  * Two columns: the narrative on the left, a single tall photograph on the right
  * that sticks while the text scrolls past it.
  */
-export async function Story() {
-  const t = await getTranslations("about");
+export function Story() {
+  const t = useTranslations("about");
   const paragraphs = t.raw("storyParagraphs") as string[];
 
   return (

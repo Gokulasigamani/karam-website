@@ -1,4 +1,6 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { footerNav } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/container";
@@ -6,8 +8,8 @@ import { SmoothLink } from "@/components/ui/smooth-link";
 import { SocialLinks } from "@/components/ui/social-links";
 import { Logo } from "@/components/ui/icons";
 
-export async function Footer() {
-  const t = await getTranslations();
+export function Footer() {
+  const t = useTranslations();
 
   return (
     <Container as="footer" className="pb-5">

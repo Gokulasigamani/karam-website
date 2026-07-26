@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import { tamilNaduIntro } from "@/content/about";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
@@ -15,8 +17,8 @@ const STATE_ICONS: IconName[] = ["mapPin", "users", "building", "shieldCheck"];
  * on the left, the changing step on the right. Two columns keep it short
  * instead of stacking into a tall block.
  */
-export async function TamilNadu() {
-  const t = await getTranslations("about");
+export function TamilNadu() {
+  const t = useTranslations("about");
   const points = (t.raw("statePoints") as { title: string; description: string }[]).map(
     (point, index) => ({ ...point, icon: STATE_ICONS[index] }),
   );

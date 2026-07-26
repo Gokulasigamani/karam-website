@@ -1,12 +1,14 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { routes } from "@/constants/routes";
 import { Section } from "@/components/ui/section";
 import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icons";
 
-export async function Faq() {
-  const t = await getTranslations("faq");
+export function Faq() {
+  const t = useTranslations("faq");
   const items = t.raw("items") as { question: string; answer: string }[];
 
   return (

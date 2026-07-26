@@ -1,4 +1,6 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icons";
@@ -18,8 +20,8 @@ const CAUSE_ICONS: IconName[] = [
  * hairlines, the way a printed index reads. A lime wash wipes in from the left
  * on hover, so the row responds without anything shifting position.
  */
-export async function Causes() {
-  const t = await getTranslations("causes");
+export function Causes() {
+  const t = useTranslations("causes");
   const causes = t.raw("items") as { title: string; description: string }[];
 
   return (

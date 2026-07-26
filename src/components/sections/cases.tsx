@@ -1,5 +1,7 @@
-import { getTranslations } from "next-intl/server";
-import { getCases } from "@/features/cases/server/cases.repo";
+"use client";
+
+import { useTranslations } from "next-intl";
+import type { CaseRecord } from "@/content/cases";
 import { routes } from "@/constants/routes";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { CaseCard } from "@/components/sections/case-card";
@@ -13,16 +15,14 @@ import { Icon } from "@/components/ui/icons";
  * small-screen layouts usually break, and a stacked card reads better on a
  * phone anyway.
  *
- * Reads the same source as `/cases` so the two never drift; shows the first
- * three, and the full list lives at `/cases`.
+ * The cases are fetched by the server page and passed in, so this stays a client
+ * component that re-renders instantly on a language switch.
  */
 const TEASER_COUNT = 3;
 
-export async function Cases() {
-  const [featured, t] = await Promise.all([
-    getCases().then((cases) => cases.slice(0, TEASER_COUNT)),
-    getTranslations(),
-  ]);
+export function Cases({ cases }: { cases: CaseRecord[] }) {
+  const t = useTranslations();
+  const featured = cases.slice(0, TEASER_COUNT);
 
   return (
     <Section id="cases" className="pt-0 sm:pt-0 lg:pt-0">

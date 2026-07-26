@@ -1,5 +1,7 @@
-﻿import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+﻿"use client";
+
+import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { routes } from "@/constants/routes";
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
@@ -10,8 +12,8 @@ import { SocialLinks } from "@/components/ui/social-links";
  * Full-bleed opening card. The wordmark scales with the viewport via `clamp()`
  * so it stays edge-hugging from 320px to ultrawide without breakpoint overrides.
  */
-export async function Hero() {
-  const t = await getTranslations();
+export function Hero() {
+  const t = useTranslations();
 
   return (
     <Container className="pt-2">

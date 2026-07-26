@@ -1,11 +1,13 @@
+"use client";
+
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { routes } from "@/constants/routes";
 
-export default async function NotFound() {
-  const t = await getTranslations("notFound");
+export default function NotFound() {
+  const t = useTranslations("notFound");
 
   return (
     <Container className="flex flex-col items-center justify-center gap-4 py-24 text-center">
