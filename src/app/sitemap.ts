@@ -13,6 +13,7 @@ const pages: { path: string; priority: number; changeFrequency: Frequency }[] = 
   { path: routes.cases, priority: 0.9, changeFrequency: "daily" },
   { path: routes.raiseConcern, priority: 0.9, changeFrequency: "monthly" },
   { path: routes.volunteer, priority: 0.8, changeFrequency: "monthly" },
+  { path: routes.announcements, priority: 0.7, changeFrequency: "weekly" },
   { path: routes.about, priority: 0.7, changeFrequency: "monthly" },
   { path: routes.contact, priority: 0.6, changeFrequency: "yearly" },
   { path: routes.privacy, priority: 0.3, changeFrequency: "yearly" },

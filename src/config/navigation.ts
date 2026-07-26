@@ -31,6 +31,7 @@ export const footerNav: { titleKey: string; items: NavItem[] }[] = [
     titleKey: "groupSupport",
     items: [
       { key: "howItWorks", href: routes.howItWorks },
+      { key: "announcements", href: routes.announcements },
       { key: "faq", href: routes.faq },
       { key: "contactUs", href: routes.contact },
       { key: "officialChannels", href: routes.officials },

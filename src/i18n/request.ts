@@ -1,6 +1,6 @@
 import { getRequestConfig } from "next-intl/server";
 import { cookies } from "next/headers";
-import { defaultLocale, isLocale, LOCALE_COOKIE } from "./config";
+import { defaultLocale, isLocale, LOCALE_COOKIE, TIME_ZONE } from "./config";
 
 /**
  * Resolves the active locale from the `NEXT_LOCALE` cookie (falling back to
@@ -13,6 +13,7 @@ export default getRequestConfig(async () => {
 
   return {
     locale,
+    timeZone: TIME_ZONE,
     messages: (await import(`../messages/${locale}.json`)).default,
   };
 });

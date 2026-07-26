@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useState, type ReactNode } from
 import { NextIntlClientProvider } from "next-intl";
 import en from "@/messages/en.json";
 import ta from "@/messages/ta.json";
-import { LOCALE_COOKIE, type Locale } from "@/i18n/config";
+import { LOCALE_COOKIE, TIME_ZONE, type Locale } from "@/i18n/config";
 
 /** Both catalogs ship to the client so switching needs no network round-trip. */
 const MESSAGES: Record<Locale, typeof en> = { en, ta: ta as unknown as typeof en };
@@ -53,7 +53,7 @@ export function LocaleProvider({
 
   return (
     <LocaleContext.Provider value={{ locale, setLocale: change }}>
-      <NextIntlClientProvider locale={locale} messages={MESSAGES[locale]}>
+      <NextIntlClientProvider locale={locale} timeZone={TIME_ZONE} messages={MESSAGES[locale]}>
         {children}
       </NextIntlClientProvider>
     </LocaleContext.Provider>

@@ -11,6 +11,7 @@ export const routes = {
   raiseConcern: "/raise-a-concern",
   volunteer: "/volunteers-near-you",
   cases: "/cases",
+  announcements: "/announcements",
   contact: "/contact",
   privacy: "/privacy",
   terms: "/terms",

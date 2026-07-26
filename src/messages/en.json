@@ -19,6 +19,7 @@
     "aboutUs": "About Us",
     "raiseConcern": "Raise A Concern",
     "contactUs": "Contact Us",
+    "announcements": "Announcements",
     "groupTakeAction": "Take Action",
     "groupSupport": "Support",
     "groupKaram": "Karam",
@@ -499,6 +500,82 @@
         { "heading": "Reviewing this page", "paragraphs": ["We review this statement whenever a significant part of the site changes, and at minimum once a year. The date above is the last time it was checked against the live site rather than the last time the wording was edited."] }
       ]
     }
+  },
+  "announcements": {
+    "carousel": {
+      "region": "Announcements",
+      "previous": "Previous slide",
+      "next": "Next slide",
+      "goToSlide": "Go to slide {n}",
+      "slides": [
+        {
+          "eyebrow": "Campaign",
+          "title": "26 Wards, One Ration Line",
+          "description": "The canal-bank families now draw their ration where they live. Here is how a single raised concern became a district-wide fix.",
+          "cta": "See Live Cases"
+        },
+        {
+          "eyebrow": "Volunteer Week",
+          "title": "One Hour Closes A Case",
+          "description": "For seven days, wards across the state open their doors to new volunteers. Verify your first case near home.",
+          "cta": "Volunteer Near You"
+        },
+        {
+          "eyebrow": "Milestone",
+          "title": "8,240 Cases Answered Together",
+          "description": "Every one carried a name, a date and a neighbour who stood behind it — and the board keeps growing.",
+          "cta": "Raise A Concern"
+        },
+        {
+          "eyebrow": "Monsoon Ready",
+          "title": "Before The Water Rises",
+          "description": "Ward teams are mapping the streets that flood first, so relief reaches them the same day. Join the readiness drive.",
+          "cta": "Volunteer Near You"
+        }
+      ]
+    },
+    "introEyebrow": "Announcements",
+    "introTitle": "What's Moving Right Now",
+    "introDescription": "Campaigns, milestones and calls to action from wards across Tamil Nadu. This is where the community's momentum lives — the drives you can join today and the wins worth telling.",
+    "storyKicker": "A Story",
+    "storyLead": "Forty Pensions, Cleared In A Fortnight",
+    "chapters": [
+      {
+        "eyebrow": "Chapter One",
+        "title": "The Line That Went Nowhere",
+        "body": "Forty-three widow pensions cleared the taluk office in March, then simply stopped. Four months on, not one had reached disbursement. The applicants — mostly women over sixty, living alone — travelled to the same counter every fortnight at their own cost, and were sent home each time."
+      },
+      {
+        "eyebrow": "Chapter Two",
+        "title": "One Voice Became Forty-Three",
+        "body": "A volunteer noticed the same stall in four separate cases in a single week. Karam filed not forty-three lone requests but one grouped case — one that could not be quietly closed a single applicant at a time. Thirty-one acknowledgement slips were gathered in person; the rest rebuilt from the taluk register."
+      },
+      {
+        "eyebrow": "Chapter Three",
+        "title": "Nothing Changed But The Count",
+        "body": "It moved — in a fortnight. No rule was rewritten and no exception was granted. What changed was the number of people standing behind the request, and a desk that finally had to answer for it."
+      }
+    ],
+    "statsTitle": "By The Numbers",
+    "storyStats": [
+      { "value": "43", "label": "Applicants" },
+      { "value": "14 days", "label": "To first disbursement" },
+      { "value": "1 case", "label": "Filed, not forty-three" }
+    ],
+    "listTitle": "Latest From The Wards",
+    "listDescription": "New districts, drives and milestones as they happen.",
+    "items": [
+      { "tag": "New District", "date": "24 July 2026", "title": "Karam Opens In Nagapattinam", "excerpt": "Ward coordinators are now live across the delta. A concern raised there reaches a local desk from day one." },
+      { "tag": "Drive", "date": "20 July 2026", "title": "Monsoon Readiness Begins", "excerpt": "Volunteers are mapping flood-prone streets so relief lands the same day the water does." },
+      { "tag": "Milestone", "date": "12 July 2026", "title": "One Lakh Members And Counting", "excerpt": "The network crossed 1,24,860 neighbours, volunteers and officials working the same cases." },
+      { "tag": "Partnership", "date": "5 July 2026", "title": "A Direct Line To Revenue", "excerpt": "The Revenue department now receives verified cases with a named officer and a response date attached." },
+      { "tag": "Volunteer", "date": "1 July 2026", "title": "Verification, In An Hour", "excerpt": "The new verify queue puts pending cases near you at the top. Two confirmations move a case to public." },
+      { "tag": "Update", "date": "24 June 2026", "title": "Your Name, Your Choice", "excerpt": "You can now keep your name private on any case — visible only to the volunteers and the officer handling it." }
+    ],
+    "ctaTitle": "Have something to announce?",
+    "ctaBody": "Running a drive, or reached a milestone worth sharing? Tell the team and we will put it in front of the wards that need it.",
+    "ctaPrimary": "Contact Us",
+    "ctaSecondary": "Raise A Concern"
   },
   "hero": {
     "help": "Help Others"
