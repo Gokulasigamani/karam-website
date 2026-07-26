@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { requireUser } from "@/features/auth";
-import { getCasesRaisedBy } from "@/features/cases/server/cases.repo";
+import { countCasesVerifiedBy, getCasesRaisedBy } from "@/features/cases/server/cases.repo";
+import { getVolunteersInDistrict } from "@/features/auth/server/users.repo";
 import { routes } from "@/constants/routes";
 import { AccountContent } from "./_components/account-content";
 
@@ -8,12 +9,19 @@ export const metadata: Metadata = { title: "Your Account" };
 
 export default async function AccountPage() {
   const user = await requireUser(routes.account);
-  const raised = await getCasesRaisedBy(user.id);
+
+  const [raised, verifiedCount, teammates] = await Promise.all([
+    getCasesRaisedBy(user.id),
+    user.role === "member" ? Promise.resolve(0) : countCasesVerifiedBy(user.id),
+    user.district ? getVolunteersInDistrict(user.district, user.id) : Promise.resolve([]),
+  ]);
 
   return (
     <AccountContent
-      user={{ name: user.name, email: user.email, role: user.role }}
+      user={user}
       raised={raised}
+      verifiedCount={verifiedCount}
+      teammates={teammates}
     />
   );
 }

@@ -2,9 +2,9 @@ import "server-only";
 
 import { ObjectId, type WithId } from "mongodb";
 import { getDb } from "@/lib/db/mongo";
-import type { Role, SessionUser } from "../types";
+import type { GeoPoint, Role, SessionUser, Teammate } from "../types";
 
-export type { Role, SessionUser };
+export type { Role, SessionUser, Teammate };
 
 /** Stored user. `email` is always lowercased; `passwordHash` never leaves the server. */
 export interface UserDocument {
@@ -14,6 +14,10 @@ export interface UserDocument {
   role: Role;
   district?: string;
   locality?: string;
+  ward?: string;
+  bio?: string;
+  photo?: string;
+  location?: GeoPoint;
   phone?: string;
   createdAt: Date;
 }
@@ -28,7 +32,73 @@ function toSessionUser(doc: WithId<UserDocument>): SessionUser {
     role: doc.role,
     district: doc.district,
     locality: doc.locality,
+    ward: doc.ward,
+    bio: doc.bio,
+    photo: doc.photo,
+    location: doc.location,
+    joinedAt: doc.createdAt ? doc.createdAt.toISOString() : undefined,
   };
+}
+
+/** The fields a member can edit about themselves from the profile page. */
+export interface ProfileUpdate {
+  name: string;
+  bio?: string;
+  district?: string;
+  ward?: string;
+  photo?: string;
+  location?: GeoPoint;
+}
+
+/**
+ * Saves the editable profile fields. Empty optional values are `$unset` so a
+ * cleared field actually disappears rather than lingering as an empty string.
+ */
+export async function updateProfile(id: string, update: ProfileUpdate): Promise<void> {
+  if (!ObjectId.isValid(id)) return;
+  const db = await getDb();
+
+  const set: Record<string, unknown> = { name: update.name };
+  const unset: Record<string, ""> = {};
+  const optional: (keyof ProfileUpdate)[] = ["bio", "district", "ward", "photo", "location"];
+  for (const key of optional) {
+    const value = update[key];
+    if (value === undefined || value === "") unset[key] = "";
+    else set[key] = value;
+  }
+
+  await db.collection<UserDocument>(COLLECTION).updateOne(
+    { _id: new ObjectId(id) },
+    Object.keys(unset).length ? { $set: set, $unset: unset } : { $set: set },
+  );
+}
+
+/**
+ * Volunteers covering the same district, so a member sees who is active around
+ * them. Excludes the viewer and caps the list; ordered by most recently joined.
+ */
+export async function getVolunteersInDistrict(
+  district: string,
+  excludeId: string,
+): Promise<Teammate[]> {
+  if (!district) return [];
+  const db = await getDb();
+  const docs = await db
+    .collection<UserDocument>(COLLECTION)
+    .find({ role: "volunteer", district })
+    .sort({ createdAt: -1 })
+    .limit(18)
+    .toArray();
+
+  return docs
+    .filter((doc) => doc._id.toHexString() !== excludeId)
+    .map((doc) => ({
+      id: doc._id.toHexString(),
+      name: doc.name,
+      locality: doc.locality,
+      ward: doc.ward,
+      photo: doc.photo,
+    }));
 }
 
 /** Full document (with hash) — for the login check only. */

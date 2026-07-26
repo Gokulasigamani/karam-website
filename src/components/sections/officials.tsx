@@ -3,6 +3,8 @@
 import { useTranslations } from "next-intl";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
+import { SectionCta } from "@/components/ui/section-cta";
+import { routes } from "@/constants/routes";
 import { Icon } from "@/components/ui/icons";
 
 interface Department {
@@ -21,6 +23,7 @@ interface Department {
  */
 export function Officials() {
   const t = useTranslations("officials");
+  const tc = useTranslations("common");
   const points = t.raw("points") as string[];
   const departments = t.raw("departments") as Department[];
 
@@ -50,6 +53,11 @@ export function Officials() {
               </Reveal>
             ))}
           </ul>
+
+          <SectionCta
+            primary={{ label: tc("contactUs"), href: routes.contact }}
+            secondary={{ label: tc("raiseConcern"), href: routes.raiseConcern }}
+          />
         </div>
 
         <Reveal delay={100}>

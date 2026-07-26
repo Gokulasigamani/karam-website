@@ -3,6 +3,8 @@
 import { useTranslations } from "next-intl";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
+import { SectionCta } from "@/components/ui/section-cta";
+import { routes } from "@/constants/routes";
 import { Icon, type IconName } from "@/components/ui/icons";
 
 /** Structure stays in code; cause text comes from the message catalog. */
@@ -22,6 +24,7 @@ const CAUSE_ICONS: IconName[] = [
  */
 export function Causes() {
   const t = useTranslations("causes");
+  const tc = useTranslations("common");
   const causes = t.raw("items") as { title: string; description: string }[];
 
   return (
@@ -67,6 +70,11 @@ export function Causes() {
           </Reveal>
         ))}
       </ul>
+
+      <SectionCta
+        primary={{ label: tc("raiseConcern"), href: routes.raiseConcern }}
+        secondary={{ label: tc("volunteerNearYou"), href: routes.volunteer }}
+      />
     </Section>
   );
 }

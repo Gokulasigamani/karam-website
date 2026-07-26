@@ -6,6 +6,7 @@ import { Cases } from "@/components/sections/cases";
 import { Officials } from "@/components/sections/officials";
 import { Community } from "@/components/sections/community";
 import { Faq } from "@/components/sections/faq";
+import { SectionConnector } from "@/components/ui/section-connector";
 
 /**
  * The page reads as an outline. It fetches the case data on the server and hands
@@ -20,10 +21,12 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+      <SectionConnector />
       <HowItWorks />
       <Causes />
       <Cases cases={cases} />
       <Officials />
+      <SectionConnector />
       <Community />
       <Faq />
     </>

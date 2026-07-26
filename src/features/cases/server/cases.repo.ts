@@ -86,6 +86,16 @@ export async function getCasesRaisedBy(userId: string): Promise<CaseRecord[]> {
   }
 }
 
+/** How many cases this volunteer has helped verify — a profile stat. */
+export async function countCasesVerifiedBy(userId: string): Promise<number> {
+  try {
+    return await (await collection()).countDocuments({ "verifications.userId": userId });
+  } catch (error) {
+    console.error("countCasesVerifiedBy: read failed", error);
+    return 0;
+  }
+}
+
 /** Every pending case — the admin can verify from anywhere. */
 export async function getPendingCases(): Promise<CaseRecord[]> {
   try {

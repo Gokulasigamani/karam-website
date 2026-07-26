@@ -120,6 +120,16 @@
     scroll-margin-top: 6rem;
   }
 
+  /* Every interactive control shows the hand cursor. Tailwind v4's preflight
+     leaves buttons at the default arrow, so set it once here for the whole site
+     (disabled controls keep the default). */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary,
+  label[for] {
+    cursor: pointer;
+  }
+
   /* Never scroll the whole page sideways. `clip` (not `hidden`) does not create
      a scroll container, so the sticky header still sticks. This is the safety
      net for long Tamil words that some component fails to wrap. */
@@ -256,6 +266,26 @@
 @media (max-width: 639px) {
   body.policy-open .scroll-top {
     bottom: 15rem;
+  }
+}
+
+/* Section connector: the lime node breathes, but only when motion is welcome. */
+@keyframes connector-node {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(-50%) scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+    box-shadow: 0 0 0 4px rgba(132, 204, 22, 0.12);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .connector-node {
+    animation: connector-node 2.6s ease-in-out infinite;
   }
 }
 
