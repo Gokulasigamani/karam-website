@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
+import aboutHeroImage from "@/assets/hero-about.png";
 import { Container } from "@/components/ui/container";
-import { HelpingHands } from "@/components/ui/helping-hands";
 import { Reveal } from "@/components/ui/reveal";
 
 export function AboutHero() {
@@ -24,8 +25,16 @@ export function AboutHero() {
         </p>
       </Reveal>
 
+      {/* Shown at its own proportions rather than cropped to a letterbox — the
+          people at the edges of the frame are the point of the picture. */}
       <Reveal delay={120} className="mt-10 lg:mt-14">
-        <HelpingHands className="aspect-[16/9] rounded-[var(--radius-media)] sm:aspect-[21/9] lg:aspect-[24/9]" />
+        <Image
+          src={aboutHeroImage}
+          alt="Karam volunteers in white caps sitting with elderly residents outside a shelter, handing over parcels and holding hands."
+          placeholder="blur"
+          sizes="100vw"
+          className="h-auto w-full rounded-[var(--radius-media)]"
+        />
       </Reveal>
     </Container>
   );

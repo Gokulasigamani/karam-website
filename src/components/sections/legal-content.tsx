@@ -15,12 +15,10 @@ import { Icon, type IconName } from "@/components/ui/icons";
  */
 export function LegalContent({
   ns,
-  image,
   asideIcon,
   reviewed = false,
 }: {
   ns: "privacy" | "terms" | "accessibility";
-  image: { url: string; alt: string };
   asideIcon: IconName;
   reviewed?: boolean;
 }) {
@@ -36,7 +34,6 @@ export function LegalContent({
           items: t.raw(`${ns}.rotating`) as string[],
         }}
         description={t(`${ns}.description`)}
-        image={image}
         aside={
           <p className="inline-flex items-center gap-2 rounded-full bg-white/8 px-3.5 py-1.5 text-[0.75rem] font-semibold text-white/70">
             <Icon name={asideIcon} className="size-3.5" />

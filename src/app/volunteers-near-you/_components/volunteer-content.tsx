@@ -14,13 +14,7 @@ import { Icon, type IconName } from "@/components/ui/icons";
 /** Icons stay in code; step text and stats come from the message catalog. */
 const STEP_ICONS: IconName[] = ["mapPin", "users", "shieldCheck", "building"];
 
-export function VolunteerContent({
-  user,
-  image,
-}: {
-  user: { role: Role; name: string } | null;
-  image: { url: string; alt: string };
-}) {
+export function VolunteerContent({ user }: { user: { role: Role; name: string } | null }) {
   const t = useTranslations();
   const steps = t.raw("volunteerPage.steps") as { title: string; description: string }[];
   const hasAccess = user?.role === "volunteer" || user?.role === "admin";
@@ -35,7 +29,6 @@ export function VolunteerContent({
           items: t.raw("volunteerPage.rotating") as string[],
         }}
         description={t("volunteerPage.description")}
-        image={image}
         aside={<BannerStats stats={t.raw("volunteerPage.stats") as { value: string; label: string }[]} />}
       />
 

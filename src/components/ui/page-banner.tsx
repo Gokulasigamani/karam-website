@@ -1,14 +1,27 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import bannerArtwork from "@/assets/hero-inner.png";
 import { Container } from "./container";
 import { Reveal } from "./reveal";
 import { RotatingText } from "./rotating-text";
 import { cn } from "@/lib/utils/cn";
 
 /**
- * Opening banner for inner pages: a photograph under a heavy black shade, with
- * a line that changes on its own. Every page starts the same way, and the
- * treatment greets rather than announces.
+ * The shared inner-page artwork already sets its own headline, so this describes
+ * the picture rather than repeating the page title that sits right below it.
+ */
+const ARTWORK_ALT =
+  "Small acts, big impact — a volunteer handing a folded blanket to an elderly man outside a village shelter, beside the words Care, Support, Respect and Empower.";
+
+/**
+ * Opening banner for inner pages: the shared artwork, with the page's own line
+ * — which changes on its own — in the block directly beneath it. Every page
+ * starts the same way, and the treatment greets rather than announces.
+ *
+ * Nothing is laid over the artwork. Its headline and icon row are set into the
+ * picture, so a scrim and a second heading on top would only fight it; the copy
+ * carries on below in the same card, which is also what keeps the white-on-dark
+ * `aside` working unchanged.
  *
  * `aside` fills the right column on wide screens and stacks underneath on
  * narrow ones.
@@ -26,72 +39,103 @@ export function PageBanner({
   title: string;
   rotating: { prefix: string; items: string[] };
   description: string;
-  image: { url: string; alt: string };
+  /**
+   * Omit to get the shared artwork. Pass a photograph only when a page needs
+   * its own picture — that switches to the older treatment, where the copy sits
+   * over the image under a heavy shade.
+   */
+  image?: { url: string; alt: string };
   aside?: ReactNode;
   className?: string;
 }) {
   const hasAside = Boolean(aside);
 
+  const copy = (
+    <div
+      className={cn(
+        "relative grid gap-10",
+        hasAside && "lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:items-end lg:gap-16",
+      )}
+    >
+      <div>
+        <span className="text-[0.6875rem] font-bold tracking-[0.14em] text-lime-400 uppercase">
+          {eyebrow}
+        </span>
+
+        <h1 className="mt-4 max-w-2xl text-[2rem] leading-[1.06] font-extrabold sm:text-[2.5rem] lg:text-[3rem]">
+          {title}
+        </h1>
+
+        {/* items-center, not baseline: a grid inside a flex row does not
+            share a reliable baseline with the text beside it */}
+        <p className="mt-5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[1.0625rem] leading-[1.35] font-bold sm:text-xl lg:text-[1.375rem]">
+          <span className="text-white/40">{rotating.prefix}</span>
+          <RotatingText items={rotating.items} className="text-lime-400" />
+        </p>
+
+        <p className="mt-6 max-w-xl text-[0.875rem] leading-[1.75] text-white/60 lg:text-[0.9375rem]">
+          {description}
+        </p>
+      </div>
+
+      {hasAside && <div>{aside}</div>}
+    </div>
+  );
+
   return (
     <Container className={cn("pt-2 pb-12 lg:pb-16", className)}>
       <Reveal>
-        {/* `shade`, not `contrast` — this sits over a photograph, so it must
-            stay black in both themes for the white type to hold up */}
-        <div className="relative isolate overflow-hidden rounded-[var(--radius-block)] bg-shade px-6 py-12 text-paper sm:px-10 sm:py-14 lg:px-14 lg:py-16">
-          <Image
-            src={image.url}
-            alt={image.alt}
-            fill
-            priority
-            sizes="100vw"
-            className="-z-20 object-cover"
-          />
+        {image ? (
+          /* `shade`, not `contrast` — this sits over a photograph, so it must
+             stay black in both themes for the white type to hold up */
+          <div className="relative isolate overflow-hidden rounded-[var(--radius-block)] bg-shade px-6 py-12 text-paper sm:px-10 sm:py-14 lg:px-14 lg:py-16">
+            <Image
+              src={image.url}
+              alt={image.alt}
+              fill
+              priority
+              sizes="100vw"
+              className="-z-20 object-cover"
+            />
 
-          {/* Black shade — heavy enough that white type stays legible over any
-              photograph, angled so the left side where the text sits is darkest */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-gradient-to-r from-shade via-shade/92 to-shade/70"
-          />
-          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-shade/45" />
+            {/* Black shade — heavy enough that white type stays legible over any
+                photograph, angled so the left side where the text sits is darkest */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 -z-10 bg-gradient-to-r from-shade via-shade/92 to-shade/70"
+            />
+            <div aria-hidden="true" className="absolute inset-0 -z-10 bg-shade/45" />
 
-          {/* Soft lime bloom, keeps the block from reading as a flat slab */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -top-28 -right-20 -z-10 size-80 rounded-full bg-lime-400/12 blur-3xl"
-          />
+            {/* Soft lime bloom, keeps the block from reading as a flat slab */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-28 -right-20 -z-10 size-80 rounded-full bg-lime-400/12 blur-3xl"
+            />
 
-          <div
-            className={cn(
-              "relative grid gap-10",
-              hasAside &&
-                "lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:items-end lg:gap-16",
-            )}
-          >
-            <div>
-              <span className="text-[0.6875rem] font-bold tracking-[0.14em] text-lime-400 uppercase">
-                {eyebrow}
-              </span>
-
-              <h1 className="mt-4 max-w-2xl text-[2rem] leading-[1.06] font-extrabold sm:text-[2.5rem] lg:text-[3rem]">
-                {title}
-              </h1>
-
-              {/* items-center, not baseline: a grid inside a flex row does not
-                  share a reliable baseline with the text beside it */}
-              <p className="mt-5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[1.0625rem] leading-[1.35] font-bold sm:text-xl lg:text-[1.375rem]">
-                <span className="text-white/40">{rotating.prefix}</span>
-                <RotatingText items={rotating.items} className="text-lime-400" />
-              </p>
-
-              <p className="mt-6 max-w-xl text-[0.875rem] leading-[1.75] text-white/60 lg:text-[0.9375rem]">
-                {description}
-              </p>
-            </div>
-
-            {hasAside && <div>{aside}</div>}
+            {copy}
           </div>
-        </div>
+        ) : (
+          <div className="overflow-hidden rounded-[var(--radius-block)] bg-shade text-paper">
+            <Image
+              src={bannerArtwork}
+              alt={ARTWORK_ALT}
+              priority
+              placeholder="blur"
+              sizes="100vw"
+              className="h-auto w-full"
+            />
+
+            <div className="relative isolate border-t border-white/10 px-6 py-11 sm:px-10 sm:py-12 lg:px-14 lg:py-14">
+              {/* Soft lime bloom, keeps the block from reading as a flat slab */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-24 -right-20 -z-10 size-80 rounded-full bg-lime-400/12 blur-3xl"
+              />
+
+              {copy}
+            </div>
+          </div>
+        )}
       </Reveal>
     </Container>
   );

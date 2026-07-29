@@ -5,10 +5,6 @@ import type { IconName } from "@/components/ui/icons";
 export const concernPage = {
   eyebrow: "Raise A Concern",
   title: "Tell Us Who Needs Help.",
-  image: {
-    url: "https://picsum.photos/seed/karam-banner-concern/1920/700",
-    alt: "A volunteer listening to a family outside their home",
-  },
   rotating: {
     prefix: "Start with",
     items: [
@@ -43,10 +39,6 @@ export const concernPage = {
 export const volunteerPage = {
   eyebrow: "Volunteers Near You",
   title: "An Hour From You Closes Someone's Case.",
-  image: {
-    url: "https://picsum.photos/seed/karam-banner-volunteer/1920/700",
-    alt: "Volunteers walking through a neighbourhood together",
-  },
   rotating: {
     prefix: "This week you could",
     items: [
@@ -105,10 +97,6 @@ export const volunteerStats = [
 export const contactPage = {
   eyebrow: "Contact Us",
   title: "Talk To A Person.",
-  image: {
-    url: "https://picsum.photos/seed/karam-banner-contact/1920/700",
-    alt: "A Karam coordinator on a call at a desk",
-  },
   rotating: {
     prefix: "Write to us about",
     items: [
@@ -189,10 +177,6 @@ export const joinInvite = {
 export const privacyPage = {
   eyebrow: "Privacy Policy",
   title: "What We Collect, And Why.",
-  image: {
-    url: "https://picsum.photos/seed/karam-banner-privacy/1920/700",
-    alt: "Case files and paperwork on a desk",
-  },
   rotating: {
     prefix: "Our promise:",
     items: [
@@ -279,10 +263,6 @@ export const privacySections: PrivacySection[] = [
 export const accessibilityPage = {
   eyebrow: "Accessibility",
   title: "Usable By Everyone, Or It Does Not Work.",
-  image: {
-    url: "https://picsum.photos/seed/karam-banner-accessibility/1920/700",
-    alt: "A volunteer reading a form aloud to an elderly man on a veranda",
-  },
   rotating: {
     prefix: "Built to work",
     items: [
@@ -353,10 +333,6 @@ export const accessibilitySections: PrivacySection[] = [
 export const termsPage = {
   eyebrow: "Terms Of Use",
   title: "What You Can Expect, And What We Ask.",
-  image: {
-    url: "https://picsum.photos/seed/karam-banner-terms/1920/700",
-    alt: "Two people signing a community register at a table",
-  },
   rotating: {
     prefix: "In short:",
     items: [

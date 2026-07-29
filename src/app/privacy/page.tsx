@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { privacyPage } from "@/content/pages";
 import { LegalContent } from "@/components/sections/legal-content";
 
 export const metadata: Metadata = {
@@ -9,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
-  return <LegalContent ns="privacy" image={privacyPage.image} asideIcon="fileText" />;
+  return <LegalContent ns="privacy" asideIcon="fileText" />;
 }

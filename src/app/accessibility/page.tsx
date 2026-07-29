@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { accessibilityPage } from "@/content/pages";
 import { LegalContent } from "@/components/sections/legal-content";
 
 export const metadata: Metadata = {
@@ -9,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function AccessibilityPage() {
-  return <LegalContent ns="accessibility" image={accessibilityPage.image} asideIcon="fileText" reviewed />;
+  return <LegalContent ns="accessibility" asideIcon="fileText" reviewed />;
 }

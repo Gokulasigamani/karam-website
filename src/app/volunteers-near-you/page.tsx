@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { volunteerPage } from "@/content/pages";
 import { getCurrentUser } from "@/features/auth";
 import { VolunteerContent } from "./_components/volunteer-content";
 
@@ -12,5 +11,5 @@ export const metadata: Metadata = {
 export default async function VolunteerPage() {
   const current = await getCurrentUser();
   const user = current ? { role: current.role, name: current.name } : null;
-  return <VolunteerContent user={user} image={volunteerPage.image} />;
+  return <VolunteerContent user={user} />;
 }

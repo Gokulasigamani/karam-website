@@ -16,7 +16,7 @@ const METHOD_META: { icon: IconName; href?: string }[] = [
   { icon: "building" },
 ];
 
-export function ContactContent({ image }: { image: { url: string; alt: string } }) {
+export function ContactContent() {
   const t = useTranslations();
   const methods = t.raw("contactPage.methods") as { label: string; value: string; note: string }[];
 
@@ -30,7 +30,6 @@ export function ContactContent({ image }: { image: { url: string; alt: string } 
           items: t.raw("contactPage.rotating") as string[],
         }}
         description={t("contactPage.description")}
-        image={image}
       />
 
       <Container className="pb-16 lg:pb-24">

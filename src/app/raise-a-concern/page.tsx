@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { concernPage } from "@/content/pages";
 import { hasSession } from "@/features/auth";
 import { ConcernContent } from "./_components/concern-content";
 
@@ -11,5 +10,5 @@ export const metadata: Metadata = {
 
 export default async function RaiseConcernPage() {
   const loggedIn = await hasSession();
-  return <ConcernContent loggedIn={loggedIn} image={concernPage.image} />;
+  return <ConcernContent loggedIn={loggedIn} />;
 }

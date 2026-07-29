@@ -9,13 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon } from "@/components/ui/icons";
 
-export function ConcernContent({
-  loggedIn,
-  image,
-}: {
-  loggedIn: boolean;
-  image: { url: string; alt: string };
-}) {
+export function ConcernContent({ loggedIn }: { loggedIn: boolean }) {
   const t = useTranslations();
 
   return (
@@ -28,7 +22,6 @@ export function ConcernContent({
           items: t.raw("concernPage.rotating") as string[],
         }}
         description={t("concernPage.description")}
-        image={image}
         aside={<BannerSteps steps={t.raw("concernPage.steps") as string[]} />}
       />
 
