@@ -7,7 +7,8 @@ import type { CaseRecord } from "@/content/cases";
 import type { Role, SessionUser, Teammate } from "@/features/auth/types";
 import { ChangePasswordForm } from "@/features/auth/components/change-password-form";
 import { logout } from "@/features/auth/server/auth.actions";
-import { routes } from "@/constants/routes";
+import { PremiumCard } from "@/features/membership-card/components/premium-card";
+import { membershipCardImageRoute, memberVerifyRoute, routes } from "@/constants/routes";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
@@ -44,11 +45,14 @@ export function AccountContent({
   raised,
   verifiedCount,
   teammates,
+  cardQr,
 }: {
   user: SessionUser;
   raised: CaseRecord[];
   verifiedCount: number;
   teammates: Teammate[];
+  /** QR data URL for the membership card, built on the server. */
+  cardQr: string;
 }) {
   const t = useTranslations();
   const locale = useLocale();
@@ -171,6 +175,48 @@ export function AccountContent({
           {user.district && <StatTile value={teammates.length} label={t("account.statTeam")} />}
           <StatTile value={`${strength}%`} label={t("account.profileStrength")} />
         </dl>
+      </Container>
+
+      {/* Membership card — the first thing a member sees after their stats */}
+      <Container className="pb-6">
+        <section className="card-pattern rounded-[var(--radius-card)] bg-surface p-6 lg:p-7">
+          <div className="grid gap-7 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-center lg:gap-10">
+            <PremiumCard holder={user} qrDataUrl={cardQr} since={since} />
+
+            <div>
+              <div className="mb-4 flex items-center gap-2">
+                <Icon name="verified" className="size-4 text-muted" />
+                <h2 className="text-[1.0625rem] font-extrabold text-ink lg:text-[1.125rem]">
+                  {t("card.panelTitle")}
+                </h2>
+              </div>
+              <p className="text-[0.875rem] leading-[1.7] text-muted">{t("card.panelBlurb")}</p>
+
+              <ul className="mt-5 space-y-3">
+                {[t("card.panelStepScan"), t("card.panelStepSave"), t("card.panelStepShow")].map(
+                  (step, index) => (
+                    <li key={step} className="flex gap-3 text-[0.875rem] leading-[1.6] text-ink">
+                      <span className="grid size-5 shrink-0 place-items-center rounded-full bg-lime-400 text-[0.6875rem] font-bold text-shade tabular-nums">
+                        {index + 1}
+                      </span>
+                      {step}
+                    </li>
+                  ),
+                )}
+              </ul>
+
+              <div className="mt-6 flex flex-wrap gap-2.5">
+                <Button href={membershipCardImageRoute(user.id)} download>
+                  <Icon name="download" className="size-4" />
+                  {t("card.download")}
+                </Button>
+                <Button href={memberVerifyRoute(user.id)} variant="subtle">
+                  {t("card.viewPublicPage")}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
       </Container>
 
       {/* Dashboard grid */}

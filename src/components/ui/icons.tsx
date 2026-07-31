@@ -241,6 +241,15 @@ function Linkedin(props: IconProps) {
   );
 }
 
+function Download(props: IconProps) {
+  return (
+    <svg {...base} {...props} aria-hidden="true">
+      <path d="M12 3v12M7.5 10.5 12 15l4.5-4.5" />
+      <path d="M4 17.5v1.5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1.5" />
+    </svg>
+  );
+}
+
 /** Brand mark — an eight-petal bloom: many people, one effort. */
 export function Logo(props: IconProps) {
   return (
@@ -279,6 +288,7 @@ export const icons = {
   verified: Verified,
   arrowRight: ArrowRight,
   arrowUp: ArrowUp,
+  download: Download,
   sun: Sun,
   moon: Moon,
   plus: Plus,

@@ -114,6 +114,43 @@ export async function findUserById(id: string): Promise<SessionUser | null> {
   return doc ? toSessionUser(doc) : null;
 }
 
+/** The subset of a user that the public membership-card page may print. */
+export interface PublicCardHolder {
+  id: string;
+  name: string;
+  role: Role;
+  district?: string;
+  ward?: string;
+  joinedAt?: string;
+}
+
+/**
+ * Looks up a member for their membership card. Anyone who scans a card's QR
+ * reaches this, so the projection is an allow-list rather than a redaction —
+ * a field added to `UserDocument` later cannot leak here by default.
+ */
+export async function findCardHolderById(id: string): Promise<PublicCardHolder | null> {
+  if (!ObjectId.isValid(id)) return null;
+  const db = await getDb();
+
+  const doc = await db
+    .collection<UserDocument>(COLLECTION)
+    .findOne(
+      { _id: new ObjectId(id) },
+      { projection: { name: 1, role: 1, district: 1, ward: 1, createdAt: 1 } },
+    );
+  if (!doc) return null;
+
+  return {
+    id: doc._id.toHexString(),
+    name: doc.name,
+    role: doc.role,
+    district: doc.district,
+    ward: doc.ward,
+    joinedAt: doc.createdAt ? doc.createdAt.toISOString() : undefined,
+  };
+}
+
 export interface NewUser {
   name: string;
   email: string;

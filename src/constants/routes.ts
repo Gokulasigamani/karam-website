@@ -44,6 +44,16 @@ export function caseRoute(id: string): string {
   return `${routes.cases}/${id}`;
 }
 
+/** Public page a scanned membership-card QR opens. Needs no session. */
+export function memberVerifyRoute(id: string): string {
+  return `/verify/${id}`;
+}
+
+/** Downloads the membership card as a PNG. */
+export function membershipCardImageRoute(id: string): string {
+  return `/api/membership-card/${id}`;
+}
+
 /** Districts used by the location fields on the concern and volunteer forms. */
 export const districts = [
   "Chennai",

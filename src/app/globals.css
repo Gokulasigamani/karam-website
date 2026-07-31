@@ -19,6 +19,16 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Self-hosted so the membership card renders identically in the browser and in
+   the PNG generator, which reads this same file from disk. */
+@font-face {
+  font-family: "Dancing Script";
+  src: url("/fonts/dancing-script.ttf") format("truetype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   /* FIXED — accent. Lime is light, so anything on it uses `shade`, not `ink`. */
   --color-lime-50: #f8fee9;
@@ -32,6 +42,17 @@
   /* FIXED — absolutes. Photo scrims, chips on photos, text on the accent. */
   --color-shade: #0a0a0a;
   --color-paper: #ffffff;
+
+  /* FIXED — membership-card foil. The card is dark in both themes, so these
+     never flip. Kept in sync with lib/card-theme.ts, which the PNG generator
+     reads (Satori cannot resolve CSS variables). */
+  --color-foil-100: #f7ecc9;
+  --color-foil-300: #e9d08a;
+  --color-foil-500: #d4af37;
+  --color-foil-700: #9a7420;
+
+  /* Script face for the co-founder signature on the membership card. */
+  --font-signature: "Dancing Script", ui-serif, cursive;
 
   /* Shape */
   --radius-card: 1rem;
